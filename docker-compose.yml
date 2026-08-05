@@ -1,0 +1,10 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tripsurance-fe-img
+    container_name: tripsurance-fe-app
+    restart: on-failure:3
+    ports:
+      - '4000:4000'
