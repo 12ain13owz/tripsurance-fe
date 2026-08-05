@@ -8,6 +8,7 @@ FROM node:24.19.0-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ENV DOCKER_BUILD=true
 RUN npm run build
 
 # Runtime stage only ships the standalone output (next.config.ts sets
