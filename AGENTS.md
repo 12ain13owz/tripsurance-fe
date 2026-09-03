@@ -12,11 +12,72 @@ Guidance for AI assistants working in **tripsurance-fe** (consumer + admin Next.
 
 ## When to read what
 
-| Task                                                 | Read                    |
-| ---------------------------------------------------- | ----------------------- |
-| Any code change                                      | This file (`AGENTS.md`) |
-| Tailwind/FlyonUI classes, colors, layout, components | [DESIGN.md](DESIGN.md)  |
-| Commit style / git workflow                          | §§ below                |
+| Task                                                    | Read                                                        |
+| ------------------------------------------------------- | ----------------------------------------------------------- |
+| Any code change                                         | This file (`AGENTS.md`)                                     |
+| Where a file/module belongs, core vs features vs shared | Architecture & layering below                               |
+| Tailwind/FlyonUI classes, colors, layout, components    | [DESIGN.md](DESIGN.md)                                      |
+| BE response shape / auth contract                       | `tripsurance-be` `AGENTS.md` §4 (response & error contract) |
+| Commit style / git workflow                             | §§ below                                                    |
+
+## Architecture & layering
+
+Same reasoning as `tripsurance-be`'s `AGENTS.md` §2, applied to a Next.js App Router frontend instead of an Express API.
+
+```
+src/
+  app/            # Next.js App Router — routes only, thin, no business logic
+    [locale]/       # consumer routes (next-intl locale segment: en/th)
+    admin/          # admin routes — excluded from locale prefixing (see proxy.ts matcher)
+  core/           # Infrastructure, app-wide. Knows nothing about specific features.
+    config/         # env loading (NEXT_PUBLIC_API_URL, ...)
+    flyonui/        # FlyonUI JS init script
+    api/            # not wired up yet — see below
+    session/        # not wired up yet — see below
+  features/       # Business features. One folder per feature. May import core + shared.
+    consumer/       # public storefront: home, plans, purchase flow
+    admin/          # not split out yet — see below
+  shared/         # Pure building blocks. No feature/business logic.
+    i18n/           # next-intl routing, messages
+    utils/          # cn(), other framework-agnostic helpers
+```
+
+Dependency direction (never break this — identical rule to the backend):
+
+```
+app (routes)  ->  features  ->  core / shared
+features      ->  shared
+```
+
+- `shared/` must not import from `core/` or `features/` — it must stay usable by any feature or by `core/` itself without knowing either exists (e.g. `shared/utils/cn.ts` doesn't know about `plans` or `admin`).
+- `core/` must not import from `features/` — infrastructure (env config, the future API client, session storage) is app-wide and must not know about a specific business domain, same as `tripsurance-be`'s `core/config`/`core/error` knowing nothing about its `auth`/`health` features.
+- Features must not import from other features. `features/consumer/*` and the future `features/admin/*` are separate audiences (public vs internal staff) — if both need the same logic, lift it into `shared/` (framework-agnostic) or `core/` (infrastructure), never import one feature into another.
+- `app/` route files stay thin — import and render a feature view, nothing else. This mirrors the backend's "thin controller" rule, applied to route files instead of controllers: `app/[locale]/page.tsx` renders `HomeView` from `features/consumer`; it does not itself contain markup or business logic.
+
+### Feature folder shape
+
+The only feature built so far, `features/consumer/home/`, is the reference shape:
+
+```
+features/<domain>/<feature>/
+  index.ts               # barrel — re-exports the public view (see features/consumer/index.ts)
+  <feature>-view.tsx      # page orchestration ('use client' only when hooks/browser APIs are needed)
+  components/              # presentational, one concern per file
+```
+
+Add `hooks/`, `lib/`, `models/` to a feature folder only once it actually calls an API — don't pre-build them empty. Same "skip files you don't need, keep the naming when you do add one" rule as the backend's file-naming convention (`tripsurance-be` `AGENTS.md` §3).
+
+### Not wired up yet — build when a feature actually needs it
+
+Matching the backend's own principle ("don't pre-build speculatively" — see its §1 on i18n): these exist as a **planned shape**, not code to write ahead of demand.
+
+- **`core/api/`** — fetch client. When built, mirror `tripsurance-be`'s response envelope exactly, since that side is already fixed:
+  ```ts
+  { message: string, timestamp: string, data?: T }
+  ```
+  Don't invent a different envelope on the frontend. Read `tripsurance-be` `AGENTS.md` §4 first.
+- **`core/session/`** — auth/session state for `/admin`. `tripsurance-be` issues a JWT access token (returned in the response body, expected as a `Bearer` header) plus a refresh token in an httpOnly cookie — build the FE session layer around that shape, not a new one. Land this alongside the first real `admin/(auth)/login` implementation (currently a stub).
+- **`features/admin/*`** — today `/admin` routes are thin stubs living directly in `app/admin/**/page.tsx`. Once dashboard/policy/claims screens get real logic, extract into `features/admin/<domain>/` mirroring `features/consumer/`'s shape above — don't let business logic accumulate inside `app/admin/`.
 
 ## Design & styling
 
