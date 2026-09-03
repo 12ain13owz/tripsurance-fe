@@ -1,8 +1,48 @@
 @import 'tailwindcss';
 @plugin 'flyonui' {
-  themes:
-    light --default,
-    black --prefersdark;
+  themes: tripsurance --default;
+}
+@plugin 'flyonui/theme' {
+  name: 'tripsurance';
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Surfaces */
+  --color-base-100: #ffffff;
+  --color-base-200: #f8fafc;
+  --color-base-300: #e2e8f0;
+  --color-base-content: #1e293b;
+
+  /* Brand */
+  --color-primary: #2563eb;
+  --color-primary-content: #ffffff;
+  --color-secondary: #0891b2;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f59e0b;
+  --color-accent-content: #0f172a;
+  --color-neutral: #334155;
+  --color-neutral-content: #f8fafc;
+
+  /* Feedback */
+  --color-info: #0ea5e9;
+  --color-info-content: #ffffff;
+  --color-success: #10b981;
+  --color-success-content: #ffffff;
+  --color-warning: #fbbf24;
+  --color-warning-content: #0f172a;
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
+
+  /* Shape */
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @import 'flyonui/variants.css';

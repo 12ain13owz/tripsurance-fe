@@ -8,6 +8,22 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+Guidance for AI assistants working in **tripsurance-fe** (consumer + admin Next.js app, travel insurance only). If anything here conflicts with the actual code, the code wins — update this file (and [DESIGN.md](DESIGN.md) for visual changes) in the same change.
+
+## When to read what
+
+| Task                                                 | Read                    |
+| ---------------------------------------------------- | ----------------------- |
+| Any code change                                      | This file (`AGENTS.md`) |
+| Tailwind/FlyonUI classes, colors, layout, components | [DESIGN.md](DESIGN.md)  |
+| Commit style / git workflow                          | §§ below                |
+
+## Design & styling
+
+- Read [DESIGN.md](DESIGN.md) before writing any Tailwind or FlyonUI classes — it is the single source of truth for colors, typography, components, and layout.
+- Stack: **Tailwind CSS v4 + FlyonUI** only (no shadcn/Radix). One light theme (`tripsurance`, defined in `src/app/globals.css`) shared by consumer and admin — **no dark mode, no theme switcher**.
+- Never hardcode a raw Tailwind palette class (`bg-blue-600`, `text-gray-500`) — always use the semantic FlyonUI tokens documented in DESIGN.md (`btn-primary`, `bg-base-200`, `text-base-content/70`, …).
+
 ## Commit messages
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) with a bullet-list body — same convention as `tripsurance-be`.
@@ -19,12 +35,12 @@ Use [Conventional Commits](https://www.conventionalcommits.org/) with a bullet-l
 ```
 
 | Type       | Use for                         |
-| ---------- | -------------------------------- |
+| ---------- | ------------------------------- |
 | `feat`     | New user-facing behavior        |
 | `fix`      | Bug fix                         |
 | `refactor` | Code change, no behavior change |
 | `test`     | Tests only                      |
-| `chore`    | Tooling, deps, config            |
+| `chore`    | Tooling, deps, config           |
 | `docs`     | Documentation only              |
 
 **Scope:** feature or area — `ui`, `i18n`, `consumer`, `admin`, `config`, `shared`, `core`, `docker`, `tooling`, …
