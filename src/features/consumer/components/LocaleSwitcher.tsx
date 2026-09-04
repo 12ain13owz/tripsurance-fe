@@ -1,8 +1,7 @@
 'use client'
 
 import { useLocale } from 'next-intl'
-import { usePathname, useRouter } from '@/shared/i18n/navigation'
-import { routing } from '@/shared/i18n/routing'
+import { routing, usePathname, useRouter } from '@/shared/i18n'
 
 export function LocaleSwitcher() {
   const locale = useLocale()

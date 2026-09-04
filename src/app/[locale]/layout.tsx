@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
-import { routing } from '@/shared/i18n/routing'
+import { routing } from '@/shared/i18n'
 import type { ReactNode } from 'react'
 
 export function generateStaticParams() {

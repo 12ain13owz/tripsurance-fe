@@ -67,6 +67,16 @@ features/<domain>/<feature>/
 
 Add `hooks/`, `lib/`, `models/` to a feature folder only once it actually calls an API — don't pre-build them empty. Same "skip files you don't need, keep the naming when you do add one" rule as the backend's file-naming convention (`tripsurance-be` `AGENTS.md` §3).
 
+### Barrel exports (index.ts)
+
+Mirrors `tripsurance-be`'s `AGENTS.md` §3 file-naming table (`Barrel | index.ts | re-exports the public surface`), adapted for this frontend's folder shapes.
+
+- Every folder whose direct children are meant to be imported together gets an `index.ts` from the moment the folder is created — don't wait until it "grows" to add one. Same as `tripsurance-be`'s `shared/utils/`, `core/mailer/templates/`, `features/docs/`, which barrel a single file each from day one.
+- **Single level only, never nested.** A folder's `index.ts` re-exports the files that live directly inside it — it never re-exports another folder's `index.ts`. Don't chain barrels (e.g. a `shared/components/index.ts` re-exporting `shared/components/forms/index.ts`); import straight from the folder that actually holds the files (`@/shared/components/forms`, not `@/shared/components`). Same shape as `kixly-deck-admin`'s `shared/components/forms/index.ts`, `shared/components/ui/index.ts`, `shared/components/icons/index.ts` — each a flat, standalone entry point, no parent aggregator over them.
+- `shared/` and `core/` folders barrel **everything** in the folder (`export * from './x'` for every file) — the whole folder is public surface, same as `tripsurance-be`'s `shared/utils/index.ts`.
+- `features/<domain>/index.ts` stays **selective** — export only the intentionally public piece (the view component), same as `tripsurance-be`'s `features/auth/index.ts` exporting just the router, never the service/schema/type files.
+- Exception: a file referenced by external tooling as a literal disk path rather than a JS import (e.g. `shared/i18n/request.ts`, passed as a string to the `next-intl` Next.js plugin config) is left out of any barrel — that's forced by the framework, not a style choice.
+
 ### Not wired up yet — build when a feature actually needs it
 
 Matching the backend's own principle ("don't pre-build speculatively" — see its §1 on i18n): these exist as a **planned shape**, not code to write ahead of demand.
