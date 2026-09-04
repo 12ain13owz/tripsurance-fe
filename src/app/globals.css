@@ -71,3 +71,8 @@
 @utility text-disabled {
   color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
 }
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
