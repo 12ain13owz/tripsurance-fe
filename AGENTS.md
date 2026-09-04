@@ -120,6 +120,12 @@ feat(i18n): configure next-intl routing and locale middleware
 
 **Don't:** paste full diffs; list every renamed method; use past tense ("added", "fixed"); commit secrets (`.env`, credentials).
 
+## Change approval
+
+- Before editing any code, list the specific changes you plan to make and wait for explicit go-ahead — don't start editing on your own initiative just because a request implies a code change.
+- Exception: if the user's message already gives the go-ahead ("confirm, go ahead", "fix it", "implement this"), proceed without a separate list-first round.
+- This covers all code changes, not just git actions — see Git workflow below for commit/push-specific rules.
+
 ## Git workflow
 
 - Work **one logical change per commit** — small, reviewable slices; do not batch unrelated changes.

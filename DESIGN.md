@@ -59,7 +59,7 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 
 ### Rules
 
-- **Do not** use raw Tailwind palette classes (`bg-blue-600`, `text-gray-500`, `ring-blue-400/50`) anywhere in the app. The earlier `travel-insurance/frontend` draft did this ad hoc (hardcoded logo/border/ring colors) — that is exactly what this file replaces. Every color must resolve through a `tripsurance` theme token.
+- **Do not** use raw Tailwind palette classes (`bg-blue-600`, `text-gray-500`, `border-blue-300`, `ring-blue-400/50`) anywhere in the app. The earlier `travel-insurance/frontend` draft did this ad hoc (hardcoded logo/border/ring colors) — that is exactly what this file replaces. Every color must resolve through a `tripsurance` theme token.
 - Need a lighter tint? Use opacity modifiers on the token (`bg-primary/10`, `border-primary/20`), not a different palette class.
 - Don't invent a parallel token system (e.g. a PrimeNG-style `primary/secondary/success/danger/help/info/contrast` set). Map 1:1 onto FlyonUI's 8 existing roles instead — `danger` → `error`, `help` → `info`, `contrast` → `neutral` or `btn-outline`. FlyonUI already generates `btn-primary`, `text-error`, etc. from these roles; a second naming scheme buys nothing and forces hand-written CSS.
 
@@ -90,6 +90,8 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 ## 4. Component stylings
 
 Use **FlyonUI's native classes directly** (`btn`, `input`, `select`, `card`, `steps`, `table`, `alert`, `badge`, `modal`, `dropdown`, `tooltip`). Do not add shadcn/Radix — FlyonUI already covers every primitive this app needs.
+
+**No hand-written CSS/SCSS** unless the effect is genuinely impossible with Tailwind + FlyonUI utilities (a multi-layer gradient-rim animation, a shimmer keyframe — not "I didn't feel like looking up the FlyonUI class"). Reach for utilities first; a new `@layer components` rule is the rare exception, not the default tool.
 
 ### Buttons
 
@@ -152,6 +154,27 @@ bg-transparent                              /* top of hero */
 - **Hero bleed:** hero background/image may go full-width; hero copy still sits inside the `max-w-6xl` inner column.
 - Mobile-first; breakpoints follow Tailwind defaults (`md` 768px, `lg` 1024px, `xl` 1280px) — FlyonUI ships the same scale, don't override it.
 
+### Layout primitives: flex/grid + gap only
+
+Build every layout with `flex` (+ `flex-col`, `grid-cols-*`) and `gap-*` — **never** `space-y-*` / `space-x-*`. One spacing mechanism, everywhere, consumer and admin alike.
+
+Standard gap scale:
+
+| Context                                          | Class          |
+| ------------------------------------------------- | -------------- |
+| Between marketing/page sections                   | `gap-8 md:gap-12` |
+| Between fields in a form / items in a card         | `gap-4`        |
+| Tight clusters (icon + label, badge row)           | `gap-2`        |
+
+Default to `flex flex-col gap-*`; switch to a row only where the design calls for it. The standard responsive-stack pattern is `flex flex-col gap-3 sm:flex-row sm:items-center` — mobile stacks vertically, desktop goes horizontal.
+
+### Utility class discipline: omit Tailwind defaults
+
+Don't write a utility class that only restates the Tailwind default — `flex-row` (flex's default direction), `justify-start`, `items-stretch`, `flex-nowrap`. They're noise and hide which classes actually do something.
+
+- **Exception:** once a breakpoint variant changes the value, write the base value explicitly so the rule reads as one pair — `flex-col md:flex-row`, not a bare `md:flex-row` with an implied default underneath.
+- This does **not** apply to values that already differ from default — `flex-col`, `grid`, `items-center` etc. are not defaults, so write them whenever used.
+
 ---
 
 ## 6. Depth & elevation
@@ -176,8 +199,11 @@ Don't reach for ad hoc `rounded-full` / `rounded-xl` overrides outside this scal
 - **DO** keep the app light-only. No `dark:` variants, no theme switcher UI, no second theme in `globals.css`.
 - **DO** reuse the exact same tokens across consumer and admin — one brand, two densities.
 - **DO** route every status color (policy, claim, payment) through `success` / `warning` / `error` / `info` — never a one-off color per feature.
+- **DO** build layout with `flex`/`grid` + `gap-*` only — never `space-y-*` / `space-x-*`.
+- **DO** omit Tailwind utility classes that just restate the default (`flex-row`, `justify-start`, `items-stretch`) unless they're paired with a breakpoint override (`flex-col md:flex-row`).
 - **DON'T** add shadcn/Radix components — FlyonUI covers buttons, inputs, selects, modals, dropdowns, steps, tables, alerts, badges, tooltips.
-- **DON'T** hardcode palette classes (`bg-blue-600`, `text-gray-400`, `ring-blue-400/50`) — this is the #1 regression risk copied from the old prototype.
+- **DON'T** write custom CSS/SCSS for anything Tailwind + FlyonUI utilities can already do — hand-written CSS is the rare exception (e.g. a gradient-rim animation), not the default tool.
+- **DON'T** hardcode palette classes (`bg-blue-600`, `text-gray-400`, `border-blue-300`, `ring-blue-400/50`) — this is the #1 regression risk copied from the old prototype.
 - **DON'T** build a second, parallel color-role naming scheme (PrimeNG-style `primary/secondary/success/danger/help/info/contrast`). Map onto FlyonUI's 8 roles instead (see §2).
 - **DON'T** add a dark-mode toggle, even for an admin "power user" request — that requires a product decision first, not just an AI default.
 - **DON'T** add heavy marketing motion (parallax, staggered reveals) to the purchase funnel or admin — those are transactional surfaces.
@@ -203,8 +229,11 @@ Quick reference when generating UI:
 | `btn btn-primary`        | `bg-blue-600 text-white rounded px-4 py-2` |
 | `bg-base-200`            | `bg-gray-50` / `bg-slate-50`               |
 | `text-base-content/70`   | `text-gray-500`                            |
+| `border-primary/40`      | `border-blue-400/50`                       |
 | `badge badge-success`    | a custom green `<span>`                    |
 | `ring-2 ring-primary/40` | `ring-2 ring-blue-400/50`                  |
+| `flex flex-col gap-4`    | `space-y-4`                                |
+| `flex-col md:flex-row`   | bare `flex-row` with no breakpoint pairing |
 
 Example prompts that fit this system:
 
