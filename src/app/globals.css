@@ -61,3 +61,13 @@
 @theme inline {
   --font-sans: var(--font-ibm-plex-thai);
 }
+
+@utility text-subtle {
+  color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+}
+@utility text-muted {
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+@utility text-disabled {
+  color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+}

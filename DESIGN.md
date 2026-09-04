@@ -60,7 +60,8 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 ### Rules
 
 - **Do not** use raw Tailwind palette classes (`bg-blue-600`, `text-gray-500`, `border-blue-300`, `ring-blue-400/50`) anywhere in the app. The earlier `travel-insurance/frontend` draft did this ad hoc (hardcoded logo/border/ring colors) — that is exactly what this file replaces. Every color must resolve through a `tripsurance` theme token.
-- Need a lighter tint? Use opacity modifiers on the token (`bg-primary/10`, `border-primary/20`), not a different palette class.
+- Need a lighter tint on a background/border/icon? Use opacity modifiers on the token (`bg-primary/10`, `border-primary/20`), not a different palette class.
+- For body-text ink hierarchy (title vs. subtitle vs. helper text), don't reach for raw `text-base-content/NN` opacity — use the semantic text utilities in §3 (`text-subtle`, `text-muted`, `text-disabled`) instead, so the same three levels stay consistent everywhere instead of each component picking its own fraction. Raw opacity on `text-base-content` is still fine for transient/decorative states that aren't part of the static content hierarchy — e.g. `hover:text-base-content/70`.
 - Don't invent a parallel token system (e.g. a PrimeNG-style `primary/secondary/success/danger/help/info/contrast` set). Map 1:1 onto FlyonUI's 8 existing roles instead — `danger` → `error`, `help` → `info`, `contrast` → `neutral` or `btn-outline`. FlyonUI already generates `btn-primary`, `text-error`, etc. from these roles; a second naming scheme buys nothing and forces hand-written CSS.
 
 ---
@@ -76,8 +77,12 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 | Section H2           | `text-3xl md:text-4xl font-semibold`           |
 | Card / subsection H3 | `text-xl font-semibold`                        |
 | Body                 | `text-base text-base-content leading-relaxed`  |
-| Helper / meta        | `text-sm text-base-content/60`                 |
+| Subtitle / nav item  | `text-subtle`                                  |
+| Helper / meta        | `text-sm text-muted`                           |
+| Disabled / placeholder | `text-disabled`                              |
 | Price / amount       | `text-2xl font-semibold tabular-nums`          |
+
+**Text ink hierarchy — `text-subtle` / `text-muted` / `text-disabled`:** three semantic utilities defined in `globals.css` (`@utility`, each a `color-mix()` of `--color-base-content` at 70% / 60% / 40%). They replace ad hoc `text-base-content/70`, `/60`, `/40` for anything that's a static part of the content hierarchy (title vs. subtitle vs. helper vs. disabled text) — same visual result, but the name tells you which level to reach for instead of having to remember a fraction, and every use stays in sync since all three still derive from the one `base-content` token. Full-strength title/body text stays plain `text-base-content` (no utility needed). Don't use these for interactive/decorative states like `hover:` or `focus:` tints — raw opacity is still correct there (see §2 Rules).
 
 **Thai-specific rules:**
 
