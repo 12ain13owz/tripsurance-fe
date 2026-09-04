@@ -160,11 +160,11 @@ Build every layout with `flex` (+ `flex-col`, `grid-cols-*`) and `gap-*` — **n
 
 Standard gap scale:
 
-| Context                                          | Class          |
-| ------------------------------------------------- | -------------- |
-| Between marketing/page sections                   | `gap-8 md:gap-12` |
-| Between fields in a form / items in a card         | `gap-4`        |
-| Tight clusters (icon + label, badge row)           | `gap-2`        |
+| Context                                    | Class             |
+| ------------------------------------------ | ----------------- |
+| Between marketing/page sections            | `gap-8 md:gap-12` |
+| Between fields in a form / items in a card | `gap-4`           |
+| Tight clusters (icon + label, badge row)   | `gap-2`           |
 
 Default to `flex flex-col gap-*`; switch to a row only where the design calls for it. The standard responsive-stack pattern is `flex flex-col gap-3 sm:flex-row sm:items-center` — mobile stacks vertically, desktop goes horizontal.
 
