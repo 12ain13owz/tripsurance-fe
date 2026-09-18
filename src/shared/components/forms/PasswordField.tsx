@@ -10,6 +10,7 @@ interface PasswordFieldProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: FieldPath<TFieldValues>
   label: string
+  placeholder?: string
   autoComplete?: string
 }
 
@@ -17,6 +18,7 @@ export function PasswordField<TFieldValues extends FieldValues>({
   control,
   name,
   label,
+  placeholder = '',
   autoComplete,
 }: PasswordFieldProps<TFieldValues>) {
   const [showPassword, setShowPassword] = useState(false)
@@ -32,7 +34,7 @@ export function PasswordField<TFieldValues extends FieldValues>({
           {...field}
           id={name}
           type={showPassword ? 'text' : 'password'}
-          placeholder={label}
+          placeholder={placeholder}
           autoComplete={autoComplete}
           className={cn('input input-lg px-11', error && 'is-invalid')}
         />

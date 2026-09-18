@@ -9,6 +9,7 @@ interface TextFieldProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   name: FieldPath<TFieldValues>
   label: string
+  placeholder?: string
   type?: 'text' | 'email'
   icon?: LucideIcon
   autoComplete?: string
@@ -18,6 +19,7 @@ export function TextField<TFieldValues extends FieldValues>({
   control,
   name,
   label,
+  placeholder = '',
   type = 'text',
   icon: Icon,
   autoComplete,
@@ -34,7 +36,7 @@ export function TextField<TFieldValues extends FieldValues>({
           {...field}
           id={name}
           type={type}
-          placeholder={label}
+          placeholder={placeholder}
           autoComplete={autoComplete}
           className={cn('input input-lg', Icon && 'ps-11', error && 'is-invalid')}
         />
