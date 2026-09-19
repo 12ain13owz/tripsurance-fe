@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ApiError } from '@/core/api'
 import { env } from '@/core/config'
 import { useSession } from '@/core/session'
@@ -16,8 +16,14 @@ import type { SignInFormValue } from './schemas/sign-in-form.schema'
 export function SignInView() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMesssage] = useState<string | null>(null)
-  const { setSession } = useSession()
+  const { status, setSession } = useSession()
   const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      void router.replace(adminRoutes.overview)
+    }
+  }, [status, router])
 
   async function handleSubmit(value: SignInFormValue) {
     setIsSubmitting(true)
@@ -32,6 +38,10 @@ export function SignInView() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (status !== 'unauthenticated') {
+    return null
   }
 
   return (
