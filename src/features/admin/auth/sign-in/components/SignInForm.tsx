@@ -5,6 +5,7 @@ import { Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { PasswordField, TextField } from '@/shared/components/forms'
+import { adminRoutes } from '@/shared/routes'
 import { signInFormSchema, type SignInFormValue } from '../schemas/sign-in-form.schema'
 
 interface SignInFormProps {
@@ -24,7 +25,7 @@ export function SignInForm({ isSubmitting = false, onSubmit }: SignInFormProps) 
         <TextField
           control={control}
           name="email"
-          label="Email address"
+          label="Email"
           type="email"
           icon={Mail}
           autoComplete="email"
@@ -37,19 +38,21 @@ export function SignInForm({ isSubmitting = false, onSubmit }: SignInFormProps) 
         />
       </div>
 
-      <div className="flex justify-end">
-        <Link
-          href="/admin/forgot-password"
-          className="text-primary text-sm font-medium hover:underline"
-        >
-          Forgot password?
-        </Link>
-      </div>
+      <div className="flex flex-col gap-4">
+        <button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting}>
+          {isSubmitting && <span className="loading loading-spinner loading-sm" />}
+          Sign in
+        </button>
 
-      <button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting}>
-        {isSubmitting && <span className="loading loading-spinner loading-sm" />}
-        Sign in
-      </button>
+        <div className="flex justify-end">
+          <Link
+            href={adminRoutes.forgotPassword}
+            className="text-primary text-sm font-medium hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
+      </div>
     </form>
   )
 }

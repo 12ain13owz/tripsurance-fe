@@ -1,3 +1,5 @@
+import { ForgotPasswordView } from '@/features/admin'
+
 export default function ForgorPasswordPage() {
-  return <h1>Forgot Password Page</h1>
+  return <ForgotPasswordView />
 }
