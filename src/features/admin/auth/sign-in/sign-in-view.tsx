@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ApiError } from '@/core/api'
 import { env } from '@/core/config'
+import type { SignInPayload } from '@/core/session'
 import { useSession } from '@/core/session'
 import { adminRoutes } from '@/shared/routes'
 import { DevQuickSignIn } from './components/DevQuickSignIn'
@@ -25,12 +26,14 @@ export function SignInView() {
     }
   }, [status, router])
 
-  async function handleSubmit(value: SignInFormValue) {
+  async function onSignIn(value: SignInFormValue) {
     setIsSubmitting(true)
     setErrorMesssage(null)
 
     try {
-      const { user, accessToken } = await signIn(value)
+      const payload: SignInPayload = { email: value.email, password: value.password }
+      const { user, accessToken } = await signIn(payload)
+
       setSession(user, accessToken)
       router.push(adminRoutes.overview)
     } catch (error) {
@@ -48,7 +51,7 @@ export function SignInView() {
     <div className="flex flex-col gap-6">
       <SignInHeader />
       <div className="divider" />
-      <SignInForm isSubmitting={isSubmitting} onSubmit={(v) => void handleSubmit(v)} />
+      <SignInForm isSubmitting={isSubmitting} onSubmit={(v) => void onSignIn(v)} />
 
       {errorMessage && (
         <div className="alert alert-error text-sm" role="alert">
@@ -59,7 +62,7 @@ export function SignInView() {
       {env.isDev && (
         <DevQuickSignIn
           isSubmitting={isSubmitting}
-          onSelect={(user) => void handleSubmit({ email: user.email, password: DEV_SEED_PASSWORD })}
+          onSelect={(user) => void onSignIn({ email: user.email, password: DEV_SEED_PASSWORD })}
         />
       )}
     </div>

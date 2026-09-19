@@ -46,7 +46,7 @@ export function SignInForm({ isSubmitting = false, onSubmit }: SignInFormProps) 
         </Link>
       </div>
 
-      <button type="submit" className="btn btn-primary btn-lg w-full" disabled={isSubmitting}>
+      <button type="submit" className="btn btn-primary btn-block" disabled={isSubmitting}>
         {isSubmitting && <span className="loading loading-spinner loading-sm" />}
         Sign in
       </button>
