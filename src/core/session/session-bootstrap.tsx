@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, type ReactNode } from 'react'
-import { refreshSession } from './refresh-session.api'
 import { useSession } from './session-context'
+import { refreshSession } from './session.api'
 
 export function SessionBootstrap({ children }: { children: ReactNode }) {
   const { status, setSession, clearSession, startLoading } = useSession()

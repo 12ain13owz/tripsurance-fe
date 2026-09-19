@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ApiError } from '@/core/api'
-import { useSession } from '@/core/session'
+import { signOut, useSession } from '@/core/session'
 
 export function Navbar() {
   const [isLoading, setIsLoading] = useState(false)
@@ -14,8 +14,11 @@ export function Navbar() {
     clearSession()
 
     try {
+      void signOut()
     } catch (error) {
       setErrorMesssage(error instanceof ApiError ? error.message : 'An unexpected error occurred')
+    } finally {
+      setIsLoading(false)
     }
   }
 
