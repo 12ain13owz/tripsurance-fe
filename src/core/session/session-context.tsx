@@ -1,14 +1,17 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import type { SessionUser } from './session.type'
 import type { ReactNode } from 'react'
 
+type SessionStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated'
 interface SessionContextValue {
   user: SessionUser | null
   accessToken: string | null
+  status: SessionStatus
   setSession: (user: SessionUser, accessToken: string) => void
   clearSession: () => void
+  startLoading: () => void
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null)
@@ -16,22 +19,30 @@ const SessionContext = createContext<SessionContextValue | null>(null)
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [status, setStatus] = useState<SessionStatus>('idle')
 
-  function setSession(user: SessionUser, accessToken: string) {
+  const setSession = useCallback((user: SessionUser, accessToken: string) => {
     setUser(user)
     setAccessToken(accessToken)
-  }
+    setStatus('authenticated')
+  }, [])
 
-  function clearSession() {
+  const clearSession = useCallback(() => {
     setUser(null)
     setAccessToken(null)
-  }
+    setStatus('unauthenticated')
+  }, [])
 
-  return (
-    <SessionContext.Provider value={{ user, accessToken, setSession, clearSession }}>
-      {children}
-    </SessionContext.Provider>
+  const startLoading = useCallback(() => {
+    setStatus('loading')
+  }, [])
+
+  const sessionValue = useMemo<SessionContextValue>(
+    () => ({ user, accessToken, status, setSession, clearSession, startLoading }),
+    [user, accessToken, status, setSession, clearSession, startLoading]
   )
+
+  return <SessionContext.Provider value={sessionValue}>{children}</SessionContext.Provider>
 }
 
 export function useSession() {

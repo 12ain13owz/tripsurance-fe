@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard - Tripsurance',
-  description: 'Manage travel insurance policies',
+  title: 'Sign In - Tripsurance Admin',
+  description: 'Sign in to manage travel insurance policies',
 }
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

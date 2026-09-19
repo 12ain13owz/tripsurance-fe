@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { ApiError } from '@/core/api'
 import { env } from '@/core/config'
 import { useSession } from '@/core/session'
+import { adminRoutes } from '@/shared/routes'
 import { DevQuickSignIn } from './components/DevQuickSignIn'
 import { SignInForm } from './components/SignInForm'
 import { SignInHeader } from './components/SignInHeader'
@@ -14,27 +16,23 @@ import type { SignInFormValue } from './schemas/sign-in-form.schema'
 export function SignInView() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMesssage] = useState<string | null>(null)
-  const { setSession, user } = useSession()
+  const { setSession } = useSession()
+  const router = useRouter()
 
   async function handleSubmit(value: SignInFormValue) {
     setIsSubmitting(true)
     setErrorMesssage(null)
 
     try {
-      const data = await signIn(value)
-      setSession(data.user, data.accessToken)
+      const { user, accessToken } = await signIn(value)
+      setSession(user, accessToken)
+      router.push(adminRoutes.overview)
     } catch (error) {
       setErrorMesssage(error instanceof ApiError ? error.message : 'An unexpected error occurred')
     } finally {
       setIsSubmitting(false)
     }
   }
-
-  useEffect(() => {
-    if (user) {
-      console.log('session updated:', user)
-    }
-  }, [user])
 
   return (
     <div className="flex flex-col gap-6">
