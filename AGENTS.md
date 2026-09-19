@@ -89,6 +89,20 @@ Matching the backend's own principle ("don't pre-build speculatively" — see it
 - **`core/session/`** — auth/session state for `/admin`. `tripsurance-be` issues a JWT access token (returned in the response body, expected as a `Bearer` header) plus a refresh token in an httpOnly cookie — build the FE session layer around that shape, not a new one. Land this alongside the first real `admin/(auth)/login` implementation (currently a stub).
 - **`features/admin/*`** — today `/admin` routes are thin stubs living directly in `app/admin/**/page.tsx`. Once dashboard/policy/claims screens get real logic, extract into `features/admin/<domain>/` mirroring `features/consumer/`'s shape above — don't let business logic accumulate inside `app/admin/`.
 
+### API payload boundaries
+
+When calling a `core/api`/`core/session` function with data that comes from component/form state, always construct the payload as a fresh object literal naming only the fields the endpoint needs — never forward the form-state object straight through, even when the shapes currently match field-for-field.
+
+```ts
+// Do
+const data = await signIn({ email: value.email, password: value.password })
+
+// Don't
+const data = await signIn(value)
+```
+
+Reason: TypeScript's excess-property check only fires on object literals, not on variables — passing a form-state variable through type-checks fine even after the form gains a UI-only field (e.g. `rememberMe`), and that field will silently leak into the real HTTP request body via `JSON.stringify`. Building the payload as its own literal is what actually prevents this, not the type annotation on the function signature.
+
 ## Design & styling
 
 - Read [DESIGN.md](DESIGN.md) before writing any Tailwind or FlyonUI classes — it is the single source of truth for colors, typography, components, and layout.
