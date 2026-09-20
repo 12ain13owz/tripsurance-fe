@@ -1,26 +1,85 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import 'tailwindcss';
+@plugin 'flyonui' {
+  /* TEMP (dev-only): default swapped to flyonui's stock "dark" theme while building UI.
+     Revert to `themes: tripsurance --default;` before shipping — tripsurance stays light-only. */
+  themes:
+    tripsurance,
+    black --default;
 }
+@plugin 'flyonui/theme' {
+  name: 'tripsurance';
+  /* TEMP (dev-only): must be false while "black" is the default in the plugin above —
+     `default: true` here targets bare :root too and wins the cascade (declared later),
+     which is why light mode kept showing. Set back to true when reverting. */
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Surfaces */
+  --color-base-100: #ffffff;
+  --color-base-200: #f8fafc;
+  --color-base-300: #e2e8f0;
+  --color-base-content: #1e293b;
+
+  /* Brand */
+  --color-primary: #2563eb;
+  --color-primary-content: #ffffff;
+  --color-secondary: #0891b2;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f59e0b;
+  --color-accent-content: #0f172a;
+  --color-neutral: #334155;
+  --color-neutral-content: #f8fafc;
+
+  /* Feedback */
+  --color-info: #0ea5e9;
+  --color-info-content: #ffffff;
+  --color-success: #10b981;
+  --color-success-content: #ffffff;
+  --color-warning: #fbbf24;
+  --color-warning-content: #0f172a;
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
+
+  /* Shape */
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@import 'flyonui/variants.css';
+@source './node_modules/flyonui/flyonui.js';
+
+/* Import Third-party override css */
+/* @import "flyonui/src/vendor/flatpickr.css"; */
+/* @import "flyonui/src/vendor/notyf.css"; */
+/* @import "flyonui/src/vendor/datatables.css"; */
+/* @import "flyonui/src/vendor/editor.css"; */
+/* @import "flyonui/src/vendor/fullcalendar.css"; */
+/* @import "flyonui/src/vendor/raty.css"; */
+/* @import "flyonui/src/vendor/waves.css"; */
+/* @import "flyonui/src/vendor/apexcharts.css"; */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-ibm-plex-thai);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility text-subtle {
+  color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+}
+@utility text-muted {
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+@utility text-disabled {
+  color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
 }
