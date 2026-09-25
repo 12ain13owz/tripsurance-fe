@@ -2,16 +2,14 @@
 @plugin 'flyonui' {
   /* TEMP (dev-only): default swapped to flyonui's stock "dark" theme while building UI.
      Revert to `themes: tripsurance --default;` before shipping — tripsurance stays light-only. */
-  themes:
-    tripsurance,
-    black --default;
+  themes: tripsurance, --default;
 }
 @plugin 'flyonui/theme' {
   name: 'tripsurance';
   /* TEMP (dev-only): must be false while "black" is the default in the plugin above —
      `default: true` here targets bare :root too and wins the cascade (declared later),
      which is why light mode kept showing. Set back to true when reverting. */
-  default: false;
+  default: true;
   prefersdark: false;
   color-scheme: light;
 
