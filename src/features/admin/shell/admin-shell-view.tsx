@@ -1,15 +1,17 @@
 'use client'
 
+import { useState, type ReactNode } from 'react'
 import { Navbar } from './components/Navbar'
 import { Sidebar } from './components/Sidebar'
-import type { ReactNode } from 'react'
 
 export function AdminShellView({ children }: { children: ReactNode }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
   return (
     <div className="flex min-h-svh">
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex flex-1 flex-col">
-        <Navbar />
+        <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>

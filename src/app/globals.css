@@ -83,3 +83,7 @@ input[type='password']::-ms-reveal,
 input[type='password']::-ms-clear {
   display: none;
 }
+
+@theme {
+  --spacing-admin-topbar: 4rem;
+}
