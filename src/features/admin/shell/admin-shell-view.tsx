@@ -12,7 +12,7 @@ export function AdminShellView({ children }: { children: ReactNode }) {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex flex-1 flex-col">
         <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
-        <main className="flex-1 p-6">{children}</main>
+        <main className="bg-base-200 flex-1 p-6">{children}</main>
       </div>
     </div>
   )

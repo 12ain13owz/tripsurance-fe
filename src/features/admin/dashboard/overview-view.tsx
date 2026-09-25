@@ -6,6 +6,7 @@ export function OverviewView() {
     <div className="flex flex-col gap-6">
       <KpiCards />
       <PremiumTrendChart />
+      <PremiumTrendChart />
     </div>
   )
 }
