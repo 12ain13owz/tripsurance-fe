@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useSession } from '@/core/session'
 import { getCountryName } from '@/shared/utils'
-import { getCountries, updateCountryStatus } from './lib/countries.api'
-import type { Country } from './lib/countries.api'
+import { getCountries, updateCountryStatus } from './lib/country.api'
+import type { Country } from './lib/country.api'
 
-export function CountriesView() {
+export function CountryView() {
   const { accessToken } = useSession()
   const [countries, setCountries] = useState<Country[] | null>(null)
   const [error, setError] = useState<string | null>(null)
