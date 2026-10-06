@@ -1,12 +1,13 @@
 'use client'
 
+import { KeyRound } from 'lucide-react'
 import { useState } from 'react'
 import { ApiError } from '@/core/api'
+import { AuthHeader } from './components/AuthHeader'
 import { ForgotPasswordForm } from './components/ForgotPasswordForm'
-import { ForgotPasswordHeader } from './components/ForgotPasswordHeader'
 import { ForgotPasswordSuccess } from './components/ForgotPasswordSuccess'
-import { requestPasswordReset } from './lib/forgot-password.api'
-import type { ForgotPasswordPayload } from './lib/forgot-password.api'
+import { requestPasswordReset } from './lib/auth.api'
+import type { ForgotPasswordPayload } from './lib/auth.type'
 import type { ForgotPasswordFormValue } from './schemas/forgot-password-form.schema'
 
 export function ForgotPasswordView() {
@@ -35,7 +36,11 @@ export function ForgotPasswordView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <ForgotPasswordHeader />
+      <AuthHeader
+        title="Forgot password"
+        subtitle="Enter your email address below to reset your password"
+        icon={KeyRound}
+      />
       <div className="divider" />
       <ForgotPasswordForm isSubmitting={isSubmitting} onSubmit={(v) => void onForgotPassword(v)} />
 

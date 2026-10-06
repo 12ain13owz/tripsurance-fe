@@ -1,5 +1,6 @@
 'use client'
 
+import { ShieldCheck } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ApiError } from '@/core/api'
@@ -7,9 +8,9 @@ import { env } from '@/core/config'
 import type { SignInPayload } from '@/core/session'
 import { signIn, useSession } from '@/core/session'
 import { adminRoutes } from '@/shared/routes'
+import { AuthHeader } from './components/AuthHeader'
 import { DevQuickSignIn } from './components/DevQuickSignIn'
 import { SignInForm } from './components/SignInForm'
-import { SignInHeader } from './components/SignInHeader'
 import { DEV_SEED_PASSWORD } from './lib/dev-seed-users'
 import type { SignInFormValue } from './schemas/sign-in-form.schema'
 
@@ -48,7 +49,11 @@ export function SignInView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <SignInHeader />
+      <AuthHeader
+        title="Sign in to Tripsurance Admin"
+        subtitle="Manage policies, claims, and customers."
+        icon={ShieldCheck}
+      />
       <div className="divider" />
       <SignInForm isSubmitting={isSubmitting} onSubmit={(v) => void onSignIn(v)} />
 

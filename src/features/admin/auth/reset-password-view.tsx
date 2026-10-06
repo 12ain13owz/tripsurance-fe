@@ -1,14 +1,15 @@
 'use client'
 
+import { KeyRound } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ApiError } from '@/core/api'
 import { useSession } from '@/core/session'
 import { adminRoutes } from '@/shared/routes'
+import { AuthHeader } from './components/AuthHeader'
 import { ResetPasswordForm } from './components/ResetPasswordForm'
-import { ResetPasswordHeader } from './components/ResetPasswordHeader'
-import { resetPassword } from './lib/reset-password.api'
-import type { ResetPasswordPayload } from './lib/reset-password.api'
+import { resetPassword } from './lib/auth.api'
+import type { ResetPasswordPayload } from './lib/auth.type'
 import type { ResetPasswordFormValue } from './schemas/reset-password-form.schema'
 
 interface ResetPasswordViewProps {
@@ -44,7 +45,7 @@ export function ResetPasswordView({ token }: ResetPasswordViewProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <ResetPasswordHeader />
+      <AuthHeader title="Reset password" subtitle="Enter your new password below" icon={KeyRound} />
       <div className="divider"></div>
       <ResetPasswordForm isSubmitting={isSubmitting} onSubmit={(v) => void onResetPassword(v)} />
 

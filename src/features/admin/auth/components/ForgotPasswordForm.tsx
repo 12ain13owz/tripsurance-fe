@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { TextField } from '@/shared/components/forms'
 import { adminRoutes } from '@/shared/routes'
 import {
-  ForgotPasswordFormSchema,
+  forgotPasswordFormSchema,
   type ForgotPasswordFormValue,
 } from '../schemas/forgot-password-form.schema'
 
@@ -18,7 +18,7 @@ interface ForgotPasswordFormProps {
 
 export function ForgotPasswordForm({ isSubmitting = false, onSubmit }: ForgotPasswordFormProps) {
   const { control, handleSubmit } = useForm<ForgotPasswordFormValue>({
-    resolver: zodResolver(ForgotPasswordFormSchema),
+    resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: { email: '' },
   })
 
