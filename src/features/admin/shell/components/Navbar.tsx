@@ -35,6 +35,8 @@ export function Navbar({ email, isSigningOut, onMenuClick, onSignOut }: NavbarPr
         )}
       </div>
 
+      <p className="text-subtle truncate text-xs">{email}</p>
+
       <div className="dropdown relative inline-flex [--placement:bottom-end]">
         <button
           id="admin-account-menu"
