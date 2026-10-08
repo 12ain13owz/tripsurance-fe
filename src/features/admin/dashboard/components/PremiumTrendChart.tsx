@@ -41,7 +41,8 @@ export function PremiumTrendChart() {
 
   const points = useMemo(() => monthlyRevenue.map((d, i) => [xAt(i), yAt(d.value)] as const), [])
   const linePath = useMemo(
-    () => points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' '),
+    () =>
+      points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' '),
     [points]
   )
   const areaPath = useMemo(() => {
@@ -154,7 +155,8 @@ export function PremiumTrendChart() {
 
           {monthlyRevenue.map((_, i) => {
             const x0 = i === 0 ? PAD_LEFT : (xAt(i - 1) + xAt(i)) / 2
-            const x1 = i === monthlyRevenue.length - 1 ? WIDTH - PAD_RIGHT : (xAt(i) + xAt(i + 1)) / 2
+            const x1 =
+              i === monthlyRevenue.length - 1 ? WIDTH - PAD_RIGHT : (xAt(i) + xAt(i + 1)) / 2
             return (
               <rect
                 key={monthlyRevenue[i].month}
@@ -176,7 +178,9 @@ export function PremiumTrendChart() {
             className="bg-neutral text-neutral-content rounded-box pointer-events-none absolute px-2.5 py-1.5 text-xs whitespace-nowrap"
             style={{ left: tooltipLeft, top: tooltipTop, transform: 'translate(-50%, 0)' }}
           >
-            <strong className="tabular-nums">{(monthlyRevenue[hoverIndex].value / 1000).toFixed(2)}M</strong>{' '}
+            <strong className="tabular-nums">
+              {(monthlyRevenue[hoverIndex].value / 1000).toFixed(2)}M
+            </strong>{' '}
             {monthlyRevenue[hoverIndex].month}
           </div>
         )}

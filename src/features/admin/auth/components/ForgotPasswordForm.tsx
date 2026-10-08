@@ -6,10 +6,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { TextField } from '@/shared/components/forms'
 import { adminRoutes } from '@/shared/routes'
-import {
-  forgotPasswordFormSchema,
-  type ForgotPasswordFormValue,
-} from '../schemas/forgot-password-form.schema'
+import { forgotPasswordFormSchema } from '../schemas/forgot-password-form.schema'
+import type { ForgotPasswordFormValue } from '../schemas/forgot-password-form.schema'
 
 interface ForgotPasswordFormProps {
   isSubmitting?: boolean

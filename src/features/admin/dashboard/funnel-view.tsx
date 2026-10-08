@@ -10,7 +10,10 @@ const STAGE_COLORS = [
 
 export function FunnelView() {
   const max = funnelStages[0].value
-  const conversionRate = ((funnelStages[funnelStages.length - 1].value / funnelStages[0].value) * 100).toFixed(1)
+  const conversionRate = (
+    (funnelStages[funnelStages.length - 1].value / funnelStages[0].value) *
+    100
+  ).toFixed(1)
 
   return (
     <div className="bg-base-100 border-base-300 rounded-box flex flex-col gap-1 border p-4 shadow-sm sm:p-5">
@@ -20,11 +23,14 @@ export function FunnelView() {
       <div className="mt-3 flex flex-col gap-2.5">
         {funnelStages.map((stage, index) => {
           const widthPct = ((stage.value / max) * 100).toFixed(1)
-          const retainedPct = index === 0 ? null : ((stage.value / funnelStages[index - 1].value) * 100).toFixed(0)
+          const retainedPct =
+            index === 0 ? null : ((stage.value / funnelStages[index - 1].value) * 100).toFixed(0)
           return (
             <div key={stage.stage} className="flex flex-col gap-1">
               {retainedPct !== null && (
-                <p className="text-subtle text-center text-[11px] tabular-nums">↓ {retainedPct}% continued</p>
+                <p className="text-subtle text-center text-[11px] tabular-nums">
+                  ↓ {retainedPct}% continued
+                </p>
               )}
               <div className="flex items-center justify-between text-xs">
                 <span className="text-base-content">{stage.stage}</span>
@@ -33,7 +39,10 @@ export function FunnelView() {
               <div className="bg-base-200 h-4 overflow-hidden rounded-full">
                 <div
                   className="h-full rounded-full"
-                  style={{ width: `${widthPct}%`, backgroundColor: STAGE_COLORS[index] ?? 'var(--color-primary)' }}
+                  style={{
+                    width: `${widthPct}%`,
+                    backgroundColor: STAGE_COLORS[index] ?? 'var(--color-primary)',
+                  }}
                 />
               </div>
             </div>

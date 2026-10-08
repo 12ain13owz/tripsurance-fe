@@ -28,7 +28,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside
         className={cn(
-          'bg-linear-to-b from-primary to-primary/55 border-primary-content/15 fixed inset-y-0 left-0 z-50 flex w-60 flex-col overflow-hidden border-r transition-transform duration-300',
+          'from-primary to-primary/55 border-primary-content/15 fixed inset-y-0 left-0 z-50 flex w-60 flex-col overflow-hidden border-r bg-linear-to-b transition-transform duration-300',
           'lg:sticky lg:top-0 lg:h-svh lg:translate-x-0',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}

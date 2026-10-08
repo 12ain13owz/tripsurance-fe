@@ -16,12 +16,25 @@ function claimRateStatus(claimRate: number) {
   return { label: 'High', tone: 'badge-error' } as const
 }
 
-function DeltaLabel({ value, invert = false, unit }: { value: number; invert?: boolean; unit: '%' | 'pp' }) {
+function DeltaLabel({
+  value,
+  invert = false,
+  unit,
+}: {
+  value: number
+  invert?: boolean
+  unit: '%' | 'pp'
+}) {
   const isGood = invert ? value <= 0 : value >= 0
   const sign = value >= 0 ? '+' : ''
   const suffix = unit === 'pp' ? ' pp' : '%'
   return (
-    <p className={cn('flex items-center gap-1.5 text-xs tabular-nums', isGood ? 'text-success' : 'text-error')}>
+    <p
+      className={cn(
+        'flex items-center gap-1.5 text-xs tabular-nums',
+        isGood ? 'text-success' : 'text-error'
+      )}
+    >
       <span>
         {value >= 0 ? '▲' : '▼'} {sign}
         {value.toFixed(1)}
@@ -46,7 +59,10 @@ export function KpiCards() {
               key={option.value}
               type="button"
               onClick={() => setPeriod(option.value)}
-              className={cn('btn btn-sm rounded-full', period === option.value ? 'btn-primary' : 'btn-text')}
+              className={cn(
+                'btn btn-sm rounded-full',
+                period === option.value ? 'btn-primary' : 'btn-text'
+              )}
             >
               {option.label}
             </button>
@@ -85,7 +101,9 @@ export function KpiCards() {
             <AlertCircle className="size-3.5" /> Claim rate
           </span>
           <div className="flex flex-wrap items-baseline gap-2">
-            <span className="text-xl font-semibold tabular-nums">{formatPercent(kpi.claimRate)}</span>
+            <span className="text-xl font-semibold tabular-nums">
+              {formatPercent(kpi.claimRate)}
+            </span>
             <span className={cn('badge badge-sm', claimStatus.tone)}>{claimStatus.label}</span>
           </div>
           <DeltaLabel value={kpi.claimRateDelta} invert unit="pp" />
@@ -95,7 +113,9 @@ export function KpiCards() {
           <span className="text-subtle flex items-center gap-1.5 text-xs font-medium">
             <TrendingUp className="size-3.5" /> Conversion rate
           </span>
-          <span className="text-xl font-semibold tabular-nums">{formatPercent(kpi.conversionRate)}</span>
+          <span className="text-xl font-semibold tabular-nums">
+            {formatPercent(kpi.conversionRate)}
+          </span>
           <DeltaLabel value={kpi.conversionRateDelta} unit="pp" />
         </div>
       </div>

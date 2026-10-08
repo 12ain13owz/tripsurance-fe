@@ -1,4 +1,5 @@
-import { DEV_SEED_USERS, type DevSeedUser } from '../lib/dev-seed-users'
+import { DEV_SEED_USERS } from '../lib/dev-seed-users'
+import type { DevSeedUser } from '../lib/dev-seed-users'
 
 interface DevQuickSignInProps {
   isSubmitting?: boolean

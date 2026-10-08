@@ -26,9 +26,14 @@ export function BarList({ items }: { items: BarListItem[] }) {
               </span>
             </div>
             <div className="bg-base-200 h-2 w-full overflow-hidden rounded-full">
-              <div className="h-full rounded-full" style={{ width: `${widthPct}%`, backgroundColor: item.color }} />
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${widthPct}%`, backgroundColor: item.color }}
+              />
             </div>
-            {item.secondaryLine && <p className="text-subtle text-xs tabular-nums">{item.secondaryLine}</p>}
+            {item.secondaryLine && (
+              <p className="text-subtle text-xs tabular-nums">{item.secondaryLine}</p>
+            )}
           </div>
         )
       })}

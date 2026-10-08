@@ -20,7 +20,7 @@ export function RoutesView() {
       <p className="text-muted text-sm">Claim rate against average premium per policy</p>
 
       <div className="mt-2 overflow-x-auto">
-        <table className="table table-zebra text-xs">
+        <table className="table-zebra table text-xs">
           <thead>
             <tr>
               <th>Destination</th>
@@ -36,10 +36,15 @@ export function RoutesView() {
                 <td className="text-base-content">{getCountryName(route.isoCode)}</td>
                 <td className="text-right tabular-nums">{formatInt(route.policies)}</td>
                 <td className="text-right tabular-nums">{formatThb(route.avgPremium)}</td>
-                <td className="text-right tabular-nums">{formatThb(route.policies * route.avgPremium)}</td>
+                <td className="text-right tabular-nums">
+                  {formatThb(route.policies * route.avgPremium)}
+                </td>
                 <td className="text-right">
                   <span
-                    className={cn('inline-flex items-center gap-1.5 tabular-nums', claimRateTone(route.claimRate))}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 tabular-nums',
+                      claimRateTone(route.claimRate)
+                    )}
                   >
                     <span className="size-2 rounded-full bg-current" />
                     {route.claimRate.toFixed(1)}%

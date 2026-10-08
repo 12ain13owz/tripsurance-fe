@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { signOut, useSession } from '@/core/session'
 import { Navbar } from './components/Navbar'
 import { Sidebar } from './components/Sidebar'
+import type { ReactNode } from 'react'
 
 export function AdminShellView({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)

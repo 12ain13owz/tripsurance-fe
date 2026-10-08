@@ -6,10 +6,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { PasswordField } from '@/shared/components/forms'
 import { adminRoutes } from '@/shared/routes'
-import {
-  resetPasswordFormSchema,
-  type ResetPasswordFormValue,
-} from '../schemas/reset-password-form.schema'
+import { resetPasswordFormSchema } from '../schemas/reset-password-form.schema'
+import type { ResetPasswordFormValue } from '../schemas/reset-password-form.schema'
 
 interface ResetPasswordFormProps {
   isSubmitting?: boolean
