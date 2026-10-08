@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
-import { useSession } from '@/core/session'
 import { Pagination, Panel } from '@/shared/components/ui'
 import { getCountryName } from '@/shared/utils'
 import { CountryFilter } from './components/CountryFilter'
@@ -16,7 +15,6 @@ const PAGE_SIZE = 20
 const defaultFilters: CountryFilters = { search: '', region: 'all', status: 'all' }
 
 export function CountryView() {
-  const { accessToken } = useSession()
   const [countries, setCountries] = useState<Country[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
@@ -69,14 +67,14 @@ export function CountryView() {
   const pageRows = filteredRows.slice(pageStart, pageStart + PAGE_SIZE)
 
   async function handleToggle(country: Country) {
-    if (!accessToken || pendingId) {
+    if (pendingId) {
       return
     }
 
     setPendingId(country.id)
     setError(null)
     try {
-      const updated = await updateCountryStatus(country.id, !country.isActive, accessToken)
+      const updated = await updateCountryStatus(country.id, !country.isActive)
       setCountries((prev) => prev?.map((c) => (c.id === updated.id ? updated : c)) ?? prev)
     } catch {
       setError('Unable to update country status')
