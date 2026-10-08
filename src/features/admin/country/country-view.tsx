@@ -20,21 +20,23 @@ export function CountryView() {
   const [countries, setCountries] = useState<Country[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
-  const [page, setPage] = useState(1)
 
-  const { control, watch } = useForm<CountryFilters>({ defaultValues: defaultFilters })
+  const { control } = useForm<CountryFilters>({ defaultValues: defaultFilters })
   const [search, region, status] = useWatch({ control, name: ['search', 'region', 'status'] })
+
+  const filterKey = `${search}|${region}|${status}`
+  const [pageState, setPageState] = useState({ filterKey, page: 1 })
+  const page = pageState.filterKey === filterKey ? pageState.page : 1
+
+  function setPage(nextPage: number) {
+    setPageState({ filterKey, page: nextPage })
+  }
 
   useEffect(() => {
     getCountries()
       .then(setCountries)
       .catch(() => setError('Unable to load countries'))
   }, [])
-
-  useEffect(() => {
-    const subscription = watch(() => setPage(1))
-    return () => subscription.unsubscribe()
-  }, [watch])
 
   const rows = useMemo<CountryRow[]>(
     () =>
