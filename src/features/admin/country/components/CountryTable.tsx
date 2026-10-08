@@ -12,12 +12,12 @@ export function CountryTable({ rows, pendingId, onToggle }: CountryTableProps) {
   }
 
   return (
-    <table className="table-striped table">
+    <table className="table-striped table table-fixed">
       <thead>
         <tr>
           <th>Country</th>
-          <th>ISO code</th>
-          <th>Status</th>
+          <th className="w-28 md:w-40">ISO code</th>
+          <th className="w-24 md:w-40">Status</th>
         </tr>
       </thead>
       <tbody>
