@@ -88,6 +88,8 @@ export default defineConfig(
         { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
       ],
       'import-x/no-duplicates': 'error',
+      // Auto-import merges types inline (`{ foo, type Bar }`); force them onto a separate `import type` line
+      'import-x/consistent-type-specifier-style': ['error', 'prefer-top-level'],
       'import-x/no-cycle': 'warn',
       // Same-folder imports use `./foo`; anything crossing a folder boundary must use the `@/` alias
       'import-x/no-relative-parent-imports': 'error',

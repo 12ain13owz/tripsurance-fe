@@ -32,13 +32,15 @@ src/
   core/           # Infrastructure, app-wide. Knows nothing about specific features.
     config/         # env loading (NEXT_PUBLIC_API_URL, ...)
     flyonui/        # FlyonUI JS init script
-    api/            # not wired up yet — see below
-    session/        # not wired up yet — see below
+    api/            # fetch client (apiClient, ApiError) — see "API & session contract" below
+    session/        # admin session state + auth endpoints — see "API & session contract" below
   features/       # Business features. One folder per feature. May import core + shared.
     consumer/       # public storefront: home, plans, purchase flow
-    admin/          # not split out yet — see below
+    admin/          # admin screens: auth, shell, dashboard, country, ...
   shared/         # Pure building blocks. No feature/business logic.
+    components/     # reusable UI (forms/, ...)
     i18n/           # next-intl routing, messages
+    routes/         # route path constants (adminRoutes, ...)
     utils/          # cn(), other framework-agnostic helpers
 ```
 
@@ -50,44 +52,53 @@ features      ->  shared
 ```
 
 - `shared/` must not import from `core/` or `features/` — it must stay usable by any feature or by `core/` itself without knowing either exists (e.g. `shared/utils/cn.ts` doesn't know about `plans` or `admin`).
-- `core/` must not import from `features/` — infrastructure (env config, the future API client, session storage) is app-wide and must not know about a specific business domain, same as `tripsurance-be`'s `core/config`/`core/error` knowing nothing about its `auth`/`health` features.
-- Features must not import from other features. `features/consumer/*` and the future `features/admin/*` are separate audiences (public vs internal staff) — if both need the same logic, lift it into `shared/` (framework-agnostic) or `core/` (infrastructure), never import one feature into another.
+- `core/` must not import from `features/` — infrastructure (env config, the API client, session storage) is app-wide and must not know about a specific business domain, same as `tripsurance-be`'s `core/config`/`core/error` knowing nothing about its `auth`/`health` features.
+- Features must not import from other features. `features/consumer/*` and `features/admin/*` are separate audiences (public vs internal staff) — if both need the same logic, lift it into `shared/` (framework-agnostic) or `core/` (infrastructure), never import one feature into another.
 - `app/` route files stay thin — import and render a feature view, nothing else. This mirrors the backend's "thin controller" rule, applied to route files instead of controllers: `app/[locale]/page.tsx` renders `HomeView` from `features/consumer`; it does not itself contain markup or business logic.
 
 ### Feature folder shape
 
-The only feature built so far, `features/consumer/home/`, is the reference shape:
+Reference shape: `features/admin/auth/forgot-password/`.
 
 ```
-features/<domain>/<feature>/
-  index.ts               # barrel — re-exports the public view (see features/consumer/index.ts)
-  <feature>-view.tsx      # page orchestration ('use client' only when hooks/browser APIs are needed)
-  components/              # presentational, one concern per file
+features/<domain>/
+  index.ts                     # the domain's only barrel — exports the views that app/ routes render
+  <feature>/
+    <feature>-view.tsx         # the feature's entry point: composes components, owns data + side effects
+    components/                # presentational only, PascalCase file per component (ForgotPasswordForm.tsx)
+    lib/                       # <feature>.api.ts (endpoint calls), static data, helpers
+    schemas/                   # zod form schemas (<name>-form.schema.ts)
 ```
 
-Add `hooks/`, `lib/`, `models/` to a feature folder only once it actually calls an API — don't pre-build them empty. Same "skip files you don't need, keep the naming when you do add one" rule as the backend's file-naming convention (`tripsurance-be` `AGENTS.md` §3).
+Add `lib/`, `schemas/`, `hooks/` only once the feature needs them — don't pre-build them empty. Same "skip files you don't need, keep the naming when you do add one" rule as the backend's file-naming convention (`tripsurance-be` `AGENTS.md` §3).
+
+**View vs components — the view is the only file that talks to the outside world:**
+
+- `<feature>-view.tsx` is the only file in the feature that calls `lib/*.api.ts`, `@/core/api`, or `@/core/session` (`useSession`, `signOut`, ...). It owns loading/error/pending state and passes data down.
+- Files in `components/` receive data and callbacks through props only (`onSubmit`, `onToggle`, `onSignOut`, ...). They may import `@/shared/*`, `lib/` static data/helpers, `schemas/`, and **types** from `lib/*.api.ts` — never an API function, `@/core/api`, or `@/core/session`.
+- Local UI state (a dropdown open flag, a controlled input before submit) is fine inside a component — the rule is about network calls and session, not about being stateless.
+
+Reason: one file per feature holds every side effect, so data flow is readable top-down and components stay reusable and testable with plain props — the same split as `tripsurance-be`'s controller (I/O) vs service.
 
 ### Barrel exports (index.ts)
 
 Mirrors `tripsurance-be`'s `AGENTS.md` §3 file-naming table (`Barrel | index.ts | re-exports the public surface`), adapted for this frontend's folder shapes.
 
-- Every folder whose direct children are meant to be imported together gets an `index.ts` from the moment the folder is created — don't wait until it "grows" to add one. Same as `tripsurance-be`'s `shared/utils/`, `core/mailer/templates/`, `features/docs/`, which barrel a single file each from day one.
+- Only two kinds of folder get an `index.ts`: folders under `shared/` and `core/` (imported by features), and `features/<domain>/` (imported by `app/` routes). Add it from the moment the folder is created — don't wait until it "grows". Same as `tripsurance-be`'s `shared/utils/`, `core/mailer/templates/`, `features/docs/`, which barrel a single file each from day one.
+- **Folders inside a feature never get a barrel** (`<feature>/`, `components/`, `lib/`, `schemas/`). Their only consumer is the feature's own view, which imports files directly (`./components/ForgotPasswordForm`, `./lib/forgot-password.api`). ESLint's `no-restricted-imports` (`@/features/*/*`) already blocks anything outside the feature from reaching in, so a barrel there would have no consumer.
 - **Single level only, never nested.** A folder's `index.ts` re-exports the files that live directly inside it — it never re-exports another folder's `index.ts`. Don't chain barrels (e.g. a `shared/components/index.ts` re-exporting `shared/components/forms/index.ts`); import straight from the folder that actually holds the files (`@/shared/components/forms`, not `@/shared/components`). Same shape as `kixly-deck-admin`'s `shared/components/forms/index.ts`, `shared/components/ui/index.ts`, `shared/components/icons/index.ts` — each a flat, standalone entry point, no parent aggregator over them.
 - `shared/` and `core/` folders barrel **everything** in the folder (`export * from './x'` for every file) — the whole folder is public surface, same as `tripsurance-be`'s `shared/utils/index.ts`.
-- `features/<domain>/index.ts` stays **selective** — export only the intentionally public piece (the view component), same as `tripsurance-be`'s `features/auth/index.ts` exporting just the router, never the service/schema/type files.
+- `features/<domain>/index.ts` stays **selective** — export only the views that routes render (e.g. `export { CountryView } from './country/country-view'`), same as `tripsurance-be`'s `features/auth/index.ts` exporting just the router, never the service/schema/type files. It points at view files directly, never at another `index.ts`.
 - Exception: a file referenced by external tooling as a literal disk path rather than a JS import (e.g. `shared/i18n/request.ts`, passed as a string to the `next-intl` Next.js plugin config) is left out of any barrel — that's forced by the framework, not a style choice.
 
-### Not wired up yet — build when a feature actually needs it
+### API & session contract
 
-Matching the backend's own principle ("don't pre-build speculatively" — see its §1 on i18n): these exist as a **planned shape**, not code to write ahead of demand.
-
-- **`core/api/`** — fetch client. When built, mirror `tripsurance-be`'s response envelope exactly, since that side is already fixed:
+- **`core/api/`** — `apiClient` mirrors `tripsurance-be`'s response envelope exactly; don't invent a different one on the frontend. Read `tripsurance-be` `AGENTS.md` §4 before changing it.
   ```ts
   { message: string, timestamp: string, data?: T }
   ```
-  Don't invent a different envelope on the frontend. Read `tripsurance-be` `AGENTS.md` §4 first.
-- **`core/session/`** — auth/session state for `/admin`. `tripsurance-be` issues a JWT access token (returned in the response body, expected as a `Bearer` header) plus a refresh token in an httpOnly cookie — build the FE session layer around that shape, not a new one. Land this alongside the first real `admin/(auth)/login` implementation (currently a stub).
-- **`features/admin/*`** — today `/admin` routes are thin stubs living directly in `app/admin/**/page.tsx`. Once dashboard/policy/claims screens get real logic, extract into `features/admin/<domain>/` mirroring `features/consumer/`'s shape above — don't let business logic accumulate inside `app/admin/`.
+- **`core/session/`** — admin session state (`useSession`) and auth endpoints, built around `tripsurance-be`'s shape: a JWT access token returned in the response body and sent as a `Bearer` header, plus a refresh token in an httpOnly cookie. Don't introduce a second token model.
+- Feature-specific endpoints live in that feature's `lib/<feature>.api.ts` and go through `apiClient` — never call `fetch` directly from a feature.
 
 ### API payload boundaries
 
@@ -148,7 +159,11 @@ feat(i18n): configure next-intl routing and locale middleware
 
 - Before editing any code, list the specific changes you plan to make and wait for explicit go-ahead — don't start editing on your own initiative just because a request implies a code change.
 - Exception: if the user's message already gives the go-ahead ("confirm, go ahead", "fix it", "implement this"), proceed without a separate list-first round.
+- **"draft code" means reply with the proposed code as text/code blocks in the conversation only — never call Edit/Write on the file.** The user reviews the draft, decides what to keep, and applies it themselves. Reason: once a change is actually written to disk, review narrows to one file's diff at a time and loses sight of the full set of proposed changes across files — seeing everything up front in chat makes it easier to decide what to change before anything is written for real.
+- **"commit message" means reply with the title + body text only (Commit messages format above) — never run `git add`/`git commit` for it.** The user stages and commits it themselves after reviewing both the code and the message together.
 - This covers all code changes, not just git actions — see Git workflow below for commit/push-specific rules.
+- **If not explicitly asked for, don't do it — ask first, every time.** This includes actions taken only to "verify" or "try out" an idea (running a script, renaming/moving/deleting a file to simulate some condition, installing something) — not just feature edits. A question ("how do I get X working?") is a request for an answer, not a request to go implement or experiment with X.
+- Never rename, move, or delete a file — even "temporarily," even inside a cleanup/`finally` step — unless the user asked for that specific file to be touched. This already happened once in `tripsurance-be`: a local CI-simulation experiment nobody asked for deleted `.env.prod`, an untracked file with real production secrets that couldn't be recovered. Verify behavior by reading/inspecting or working in a disposable scratch copy, never by modifying real project files and "restoring" them after.
 
 ## Git workflow
 

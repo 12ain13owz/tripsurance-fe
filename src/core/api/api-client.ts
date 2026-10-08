@@ -1,4 +1,5 @@
 import { env } from '@/core/config'
+import { getAccessToken } from './access-token'
 import { ApiError } from './api-error'
 
 interface ApiResponse<T> {
@@ -13,10 +14,15 @@ interface RequestOptions {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
+  const accessToken = getAccessToken()
+
   const res = await fetch(`${env.apiBaseUrl}${path}`, {
     method: options.method ?? 'GET',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
     body: options.body ? JSON.stringify(options.body) : undefined,
   })
 
@@ -32,4 +38,5 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<A
 export const apiClient = {
   get: async <T>(path: string) => request<T>(path),
   post: async <T>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body }),
+  patch: async <T>(path: string, body: unknown) => request<T>(path, { method: 'PATCH', body }),
 }

@@ -71,16 +71,16 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 - **Font:** IBM Plex Sans Thai (`font-sans`, loaded via `next/font/google` in `src/app/layout.tsx`, weights 100–700). One family covers Thai + Latin — do not add a second display font.
 - **Numbers/prices:** `tabular-nums` for premiums, coverage amounts, and dates so digits align in tables and pricing cards.
 
-| Role                 | Classes                                        |
-| -------------------- | ---------------------------------------------- |
-| Hero H1              | `text-4xl md:text-6xl font-bold leading-tight` |
-| Section H2           | `text-3xl md:text-4xl font-semibold`           |
-| Card / subsection H3 | `text-xl font-semibold`                        |
-| Body                 | `text-base text-base-content leading-relaxed`  |
-| Subtitle / nav item  | `text-subtle`                                  |
-| Helper / meta        | `text-sm text-muted`                           |
-| Disabled / placeholder | `text-disabled`                              |
-| Price / amount       | `text-2xl font-semibold tabular-nums`          |
+| Role                   | Classes                                        |
+| ---------------------- | ---------------------------------------------- |
+| Hero H1                | `text-4xl md:text-6xl font-bold leading-tight` |
+| Section H2             | `text-3xl md:text-4xl font-semibold`           |
+| Card / subsection H3   | `text-xl font-semibold`                        |
+| Body                   | `text-base text-base-content leading-relaxed`  |
+| Subtitle / nav item    | `text-subtle`                                  |
+| Helper / meta          | `text-sm text-muted`                           |
+| Disabled / placeholder | `text-disabled`                                |
+| Price / amount         | `text-2xl font-semibold tabular-nums`          |
 
 **Text ink hierarchy — `text-subtle` / `text-muted` / `text-disabled`:** three semantic utilities defined in `globals.css` (`@utility`, each a `color-mix()` of `--color-base-content` at 70% / 60% / 40%). They replace ad hoc `text-base-content/70`, `/60`, `/40` for anything that's a static part of the content hierarchy (title vs. subtitle vs. helper vs. disabled text) — same visual result, but the name tells you which level to reach for instead of having to remember a fraction, and every use stays in sync since all three still derive from the one `base-content` token. Full-strength title/body text stays plain `text-base-content` (no utility needed). Don't use these for interactive/decorative states like `hover:` or `focus:` tints — raw opacity is still correct there (see §2 Rules).
 
