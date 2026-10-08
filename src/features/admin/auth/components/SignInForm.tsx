@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { PasswordField, TextField } from '@/shared/components/forms'
 import { adminRoutes } from '@/shared/routes'
-import { signInFormSchema, type SignInFormValue } from '../schemas/sign-in-form.schema'
+import { signInFormSchema } from '../schemas/sign-in-form.schema'
+import type { SignInFormValue } from '../schemas/sign-in-form.schema'
 
 interface SignInFormProps {
   isSubmitting?: boolean
