@@ -21,7 +21,7 @@ export function SessionBootstrap({ children }: { children: ReactNode }) {
   }, [status, setSession, clearSession, startLoading])
 
   if (status === 'idle' || status === 'loading') {
-    return null // TODO: ใส่ full-page spinner กัน flash ของหน้า sign-in/overview
+    return <p>session bootstrap ({status})</p> // TODO: ใส่ full-page spinner กัน flash ของหน้า sign-in/overview
   }
 
   return <>{children}</>

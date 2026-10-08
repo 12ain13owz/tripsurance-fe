@@ -44,7 +44,7 @@ export function SignInView() {
   }
 
   if (status !== 'unauthenticated') {
-    return null
+    return <p>sign in view ({status})</p>
   }
 
   return (
