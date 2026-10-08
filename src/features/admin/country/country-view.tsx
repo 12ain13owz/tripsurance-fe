@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useSession } from '@/core/session'
-import { Pagination } from '@/shared/components/ui'
+import { Pagination, Panel } from '@/shared/components/ui'
 import { getCountryName } from '@/shared/utils'
 import { CountryFilter } from './components/CountryFilter'
 import { CountryTable } from './components/CountryTable'
@@ -84,7 +84,7 @@ export function CountryView() {
   }
 
   return (
-    <div className="bg-base-100 border-base-300 rounded-box flex flex-col gap-4 border p-4 shadow-sm sm:max-h-[calc(100svh-var(--spacing-admin-topbar)-3rem)] sm:p-5">
+    <Panel className="gap-4 sm:max-h-[calc(100svh-var(--spacing-admin-topbar)-3rem)]">
       {error && <p className="text-error text-sm">{error}</p>}
       {!error && !countries && <p className="text-muted text-sm">Loading…</p>}
       {countries && (
@@ -107,6 +107,6 @@ export function CountryView() {
           )}
         </>
       )}
-    </div>
+    </Panel>
   )
 }
