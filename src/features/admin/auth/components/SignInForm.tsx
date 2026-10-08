@@ -25,14 +25,17 @@ export function SignInForm({ isSubmitting = false, onSubmit }: SignInFormProps) 
         <TextField
           control={control}
           name="email"
+          id="email"
           label="Email"
           type="email"
           icon={Mail}
+
           autoComplete="email"
         />
         <PasswordField
           control={control}
           name="password"
+          id="password"
           label="Password"
           autoComplete="current-password"
         />
