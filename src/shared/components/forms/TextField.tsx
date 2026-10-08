@@ -3,8 +3,8 @@
 import { useId } from 'react'
 import { useController } from 'react-hook-form'
 import { cn } from '@/shared/utils'
-import { fieldSizeClass } from './field-size'
-import type { FieldSize, FieldVariant } from './field-size'
+import { fieldSizeClass } from './field'
+import type { FieldSize, FieldVariant } from './field'
 import type { LucideIcon } from 'lucide-react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
