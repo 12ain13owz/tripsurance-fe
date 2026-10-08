@@ -1,12 +1,5 @@
 import { apiClient, ApiError } from '@/core/api'
-
-export interface Country {
-  id: string
-  isoCode: string
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
-}
+import type { Country } from './country.type'
 
 export async function getCountries(): Promise<Country[]> {
   const { data } = await apiClient.get<Country[]>('/countries')
