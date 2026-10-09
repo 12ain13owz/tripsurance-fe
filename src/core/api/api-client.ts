@@ -13,18 +13,29 @@ interface RequestOptions {
   body?: unknown
 }
 
+const DEFAULT_TIMEOUT_MS = 10_000
+
 async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
   const accessToken = getAccessToken()
 
-  const res = await fetch(`${env.apiBaseUrl}${path}`, {
-    method: options.method ?? 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    },
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  })
+  let res: Response
+  try {
+    res = await fetch(`${env.apiBaseUrl}${path}`, {
+      method: options.method ?? 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
+    })
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
+      throw new ApiError('Request timed out, please try again', 408)
+    }
+    throw error
+  }
 
   const json = (await res.json().catch(() => null)) as ApiResponse<T> | null
 
