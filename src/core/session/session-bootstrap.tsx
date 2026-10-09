@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { SplashScreen } from '@/shared/components/ui'
 import { useSession } from './session-context'
 import { refreshSession } from './session.api'
 import type { ReactNode } from 'react'
@@ -22,7 +23,14 @@ export function SessionBootstrap({ children }: { children: ReactNode }) {
   }, [status, setSession, clearSession, startLoading])
 
   if (status === 'idle' || status === 'loading') {
-    return <p>session bootstrap ({status})</p> // TODO: ใส่ full-page spinner กัน flash ของหน้า sign-in/overview
+    return (
+      <>
+        <SplashScreen
+          title="Verifying your session…"
+          description="Please wait a moment"
+        ></SplashScreen>
+      </>
+    )
   }
 
   return <>{children}</>
