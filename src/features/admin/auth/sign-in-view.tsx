@@ -7,6 +7,7 @@ import { ApiError } from '@/core/api'
 import { env } from '@/core/config'
 import type { SignInPayload } from '@/core/session'
 import { signIn, useSession } from '@/core/session'
+import { SplashScreen } from '@/shared/components/ui'
 import { adminRoutes } from '@/shared/routes'
 import { AuthHeader } from './components/AuthHeader'
 import { DevQuickSignIn } from './components/DevQuickSignIn'
@@ -44,7 +45,7 @@ export function SignInView() {
   }
 
   if (status !== 'unauthenticated') {
-    return <p>sign in view ({status})</p>
+    return <SplashScreen title="Redirecting to dashboard…" />
   }
 
   return (
