@@ -1,4 +1,4 @@
-import { apiClient, ApiError } from '@/core/api'
+import { apiClient, ApiError, AUTH_REFRESH_PATH } from '@/core/api'
 import type { SessionUser } from './session.type'
 
 export interface SessionData {
@@ -28,9 +28,8 @@ export async function signOut(): Promise<void> {
 }
 
 export async function refreshSession(): Promise<SessionData> {
-  const { data } = await apiClient.post<SessionData>('/auth/refresh', undefined, {
+  const { data } = await apiClient.post<SessionData>(AUTH_REFRESH_PATH, undefined, {
     notifyError: false,
-    notifySuccess: true,
   })
   if (!data) {
     throw new ApiError('Unable to refresh session', 500)

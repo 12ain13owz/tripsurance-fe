@@ -1,7 +1,13 @@
 import { env } from '@/core/config'
 import { notify } from '@/core/notify'
 import { getAccessToken } from './access-token'
-import { ApiError, getErrorMessage, UNEXPECTED_ERROR_MESSAGE } from './api-error'
+import {
+  ApiError,
+  getErrorMessage,
+  SessionExpiredError,
+  UNEXPECTED_ERROR_MESSAGE,
+} from './api-error'
+import { AUTH_REFRESH_PATH, renewSession } from './session-renewal'
 
 interface ApiResponse<T> {
   message: string
@@ -53,18 +59,45 @@ async function send<T>(path: string, options: RequestOptions): Promise<ApiRespon
   return json
 }
 
+async function sendWithRenewal<T>(path: string, options: RequestOptions): Promise<ApiResponse<T>> {
+  // Only a request that carried a token can have failed because it expired;
+  // a 401 from sign-in is just wrong credentials
+  const sentWithToken = getAccessToken() !== null
+
+  try {
+    return await send<T>(path, options)
+  } catch (error) {
+    const isExpiredToken =
+      sentWithToken &&
+      path !== AUTH_REFRESH_PATH &&
+      error instanceof ApiError &&
+      error.status === 401
+    if (!isExpiredToken) {
+      throw error
+    }
+
+    if (!(await renewSession())) {
+      throw new SessionExpiredError()
+    }
+
+    // Retry once with the new token; a second 401 is a real error
+    return send<T>(path, options)
+  }
+}
+
 async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
   const { notifyError = true, notifySuccess = false } = options
 
   try {
-    const json = await send<T>(path, options)
+    const json = await sendWithRenewal<T>(path, options)
     if (notifySuccess) {
       notify.success(json.message)
     }
 
     return json
   } catch (error) {
-    if (notifyError) {
+    // Session expiry has its own single toast from renewSession()
+    if (notifyError && !(error instanceof SessionExpiredError)) {
       notify.error(getErrorMessage(error))
     }
     throw error
