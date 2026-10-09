@@ -12,7 +12,10 @@ export interface SignInPayload {
 }
 
 export async function signIn(payload: SignInPayload): Promise<SessionData> {
-  const { data } = await apiClient.post<SessionData>('/auth/sign-in', payload)
+  const { data } = await apiClient.post<SessionData>('/auth/sign-in', payload, {
+    notifyError: false,
+    notifySuccess: true,
+  })
   if (!data) {
     throw new ApiError('Sign-in succeeded but no data was returned', 500)
   }
@@ -27,6 +30,7 @@ export async function signOut(): Promise<void> {
 export async function refreshSession(): Promise<SessionData> {
   const { data } = await apiClient.post<SessionData>('/auth/refresh', undefined, {
     notifyError: false,
+    notifySuccess: true,
   })
   if (!data) {
     throw new ApiError('Unable to refresh session', 500)

@@ -3,7 +3,7 @@
 import { KeyRound } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { ApiError } from '@/core/api'
+import { getErrorMessage } from '@/core/api'
 import { useSession } from '@/core/session'
 import { adminRoutes } from '@/shared/routes'
 import { AuthHeader } from './components/AuthHeader'
@@ -37,7 +37,7 @@ export function ResetPasswordView({ token }: ResetPasswordViewProps) {
       setSession(user, accessToken)
       router.replace(adminRoutes.overview)
     } catch (error) {
-      setErrorMessage(error instanceof ApiError ? error.message : 'An unexpected error occurred')
+      setErrorMessage(getErrorMessage(error))
     } finally {
       setIsSubmitting(false)
     }

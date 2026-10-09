@@ -2,7 +2,7 @@
 
 import { KeyRound } from 'lucide-react'
 import { useState } from 'react'
-import { ApiError } from '@/core/api'
+import { getErrorMessage } from '@/core/api'
 import { AuthHeader } from './components/AuthHeader'
 import { ForgotPasswordForm } from './components/ForgotPasswordForm'
 import { ForgotPasswordSuccess } from './components/ForgotPasswordSuccess'
@@ -12,12 +12,12 @@ import type { ForgotPasswordFormValue } from './schemas/forgot-password-form.sch
 
 export function ForgotPasswordView() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMesssage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null)
 
   async function onForgotPassword(value: ForgotPasswordFormValue) {
     setIsSubmitting(true)
-    setErrorMesssage(null)
+    setErrorMessage(null)
 
     try {
       const payload: ForgotPasswordPayload = { email: value.email }
@@ -25,7 +25,7 @@ export function ForgotPasswordView() {
 
       setSubmittedEmail(value.email)
     } catch (error) {
-      setErrorMesssage(error instanceof ApiError ? error.message : 'An unexpected error occurred')
+      setErrorMessage(getErrorMessage(error))
     } finally {
       setIsSubmitting(false)
     }

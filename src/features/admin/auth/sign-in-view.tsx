@@ -3,7 +3,7 @@
 import { ShieldCheck } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ApiError } from '@/core/api'
+import { getErrorMessage } from '@/core/api'
 import { env } from '@/core/config'
 import type { SignInPayload } from '@/core/session'
 import { signIn, useSession } from '@/core/session'
@@ -38,7 +38,7 @@ export function SignInView() {
       setSession(user, accessToken)
       router.push(adminRoutes.overview)
     } catch (error) {
-      setErrorMesssage(error instanceof ApiError ? error.message : 'An unexpected error occurred')
+      setErrorMesssage(getErrorMessage(error))
     } finally {
       setIsSubmitting(false)
     }

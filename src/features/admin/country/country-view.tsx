@@ -16,7 +16,7 @@ const defaultFilters: CountryFilters = { search: '', region: 'all', status: 'all
 
 export function CountryView() {
   const [countries, setCountries] = useState<Country[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
 
   const { control } = useForm<CountryFilters>({ defaultValues: defaultFilters })
@@ -33,7 +33,7 @@ export function CountryView() {
   useEffect(() => {
     getCountries()
       .then(setCountries)
-      .catch(() => setError('Unable to load countries'))
+      .catch(() => setLoadError('Unable to load countries'))
   }, [])
 
   const rows = useMemo<CountryRow[]>(
@@ -72,12 +72,12 @@ export function CountryView() {
     }
 
     setPendingId(country.id)
-    setError(null)
+    setLoadError(null)
     try {
       const updated = await updateCountryStatus(country.id, !country.isActive)
       setCountries((prev) => prev?.map((c) => (c.id === updated.id ? updated : c)) ?? prev)
     } catch {
-      setError('Unable to update country status')
+      setLoadError('Unable to update country status')
     } finally {
       setPendingId(null)
     }
@@ -85,8 +85,8 @@ export function CountryView() {
 
   return (
     <Panel className="gap-4 sm:max-h-[calc(100svh-var(--spacing-admin-topbar)-3rem)]">
-      {error && <p className="text-error text-sm">{error}</p>}
-      {!error && !countries && <p className="text-muted text-sm">Loading…</p>}
+      {loadError && <p className="text-error text-sm">{loadError}</p>}
+      {!loadError && !countries && <p className="text-muted text-sm">Loading…</p>}
       {countries && (
         <>
           <CountryFilter control={control} />

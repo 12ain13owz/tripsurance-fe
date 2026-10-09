@@ -1,7 +1,7 @@
 import { env } from '@/core/config'
 import { notify } from '@/core/notify'
 import { getAccessToken } from './access-token'
-import { ApiError } from './api-error'
+import { ApiError, getErrorMessage, UNEXPECTED_ERROR_MESSAGE } from './api-error'
 
 interface ApiResponse<T> {
   message: string
@@ -20,7 +20,6 @@ interface RequestOptions extends RequestConfig {
 }
 
 const DEFAULT_TIMEOUT_MS = 10_000
-const UNEXPECTED_ERROR_MESSAGE = 'Something went wrong, please try again'
 
 async function send<T>(path: string, options: RequestOptions): Promise<ApiResponse<T>> {
   const accessToken = getAccessToken()
@@ -66,7 +65,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<A
     return json
   } catch (error) {
     if (notifyError) {
-      notify.error(error instanceof ApiError ? error.message : UNEXPECTED_ERROR_MESSAGE)
+      notify.error(getErrorMessage(error))
     }
     throw error
   }

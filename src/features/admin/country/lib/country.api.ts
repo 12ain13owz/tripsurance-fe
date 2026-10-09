@@ -2,7 +2,7 @@ import { apiClient, ApiError } from '@/core/api'
 import type { Country } from './country.type'
 
 export async function getCountries(): Promise<Country[]> {
-  const { data } = await apiClient.get<Country[]>('/admin/countries')
+  const { data } = await apiClient.get<Country[]>('/admin/countries', { notifyError: false })
   return data ?? []
 }
 

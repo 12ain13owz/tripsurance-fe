@@ -15,6 +15,8 @@ export function AdminShellView({ children }: { children: ReactNode }) {
     setIsSigningOut(true)
     try {
       await signOut()
+    } catch {
+      // Still sign out locally even if the server call failed
     } finally {
       clearSession()
     }
