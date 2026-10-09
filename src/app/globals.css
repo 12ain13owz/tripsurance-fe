@@ -55,7 +55,7 @@
 
 /* Import Third-party override css */
 /* @import "flyonui/src/vendor/flatpickr.css"; */
-/* @import "flyonui/src/vendor/notyf.css"; */
+@import 'flyonui/src/vendor/notyf.css';
 /* @import "flyonui/src/vendor/datatables.css"; */
 /* @import "flyonui/src/vendor/editor.css"; */
 /* @import "flyonui/src/vendor/fullcalendar.css"; */

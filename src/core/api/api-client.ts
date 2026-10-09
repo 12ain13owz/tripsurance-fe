@@ -1,4 +1,5 @@
 import { env } from '@/core/config'
+import { notify } from '@/core/notify'
 import { getAccessToken } from './access-token'
 import { ApiError } from './api-error'
 
@@ -8,14 +9,20 @@ interface ApiResponse<T> {
   data?: T
 }
 
-interface RequestOptions {
+interface RequestConfig {
+  notifyError?: boolean
+  notifySuccess?: boolean
+}
+
+interface RequestOptions extends RequestConfig {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   body?: unknown
 }
 
 const DEFAULT_TIMEOUT_MS = 10_000
+const UNEXPECTED_ERROR_MESSAGE = 'Something went wrong, please try again'
 
-async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
+async function send<T>(path: string, options: RequestOptions): Promise<ApiResponse<T>> {
   const accessToken = getAccessToken()
 
   let res: Response
@@ -34,20 +41,40 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<A
     if (error instanceof DOMException && error.name === 'TimeoutError') {
       throw new ApiError('Request timed out, please try again', 408)
     }
-    throw error
+    throw new ApiError('Unable to reach the server, please try again', 0)
   }
 
   const json = (await res.json().catch(() => null)) as ApiResponse<T> | null
 
   if (!res.ok || !json) {
-    throw new ApiError(json?.message ?? 'Something went wrong', res.status, json?.data)
+    const message = res.status >= 500 ? UNEXPECTED_ERROR_MESSAGE : json?.message
+    throw new ApiError(message ?? UNEXPECTED_ERROR_MESSAGE, res.status, json?.data)
   }
 
   return json
 }
 
+async function request<T>(path: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
+  const { notifyError = true, notifySuccess = false } = options
+
+  try {
+    const json = await send<T>(path, options)
+    if (notifySuccess) {
+      notify.success(json.message)
+    }
+
+    return json
+  } catch (error) {
+    if (notifyError) {
+      notify.error(error instanceof ApiError ? error.message : UNEXPECTED_ERROR_MESSAGE)
+    }
+    throw error
+  }
+}
 export const apiClient = {
-  get: async <T>(path: string) => request<T>(path),
-  post: async <T>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body }),
-  patch: async <T>(path: string, body: unknown) => request<T>(path, { method: 'PATCH', body }),
+  get: async <T>(path: string, config?: RequestConfig) => request<T>(path, config),
+  post: async <T>(path: string, body?: unknown, config?: RequestConfig) =>
+    request<T>(path, { ...config, method: 'POST', body }),
+  patch: async <T>(path: string, body: unknown, config?: RequestConfig) =>
+    request<T>(path, { ...config, method: 'PATCH', body }),
 }

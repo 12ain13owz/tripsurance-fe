@@ -25,7 +25,9 @@ export async function signOut(): Promise<void> {
 }
 
 export async function refreshSession(): Promise<SessionData> {
-  const { data } = await apiClient.post<SessionData>('/auth/refresh')
+  const { data } = await apiClient.post<SessionData>('/auth/refresh', undefined, {
+    notifyError: false,
+  })
   if (!data) {
     throw new ApiError('Unable to refresh session', 500)
   }
