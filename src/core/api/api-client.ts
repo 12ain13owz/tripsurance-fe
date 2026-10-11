@@ -16,8 +16,8 @@ interface ApiResponse<T> {
 }
 
 interface RequestConfig {
-  notifyError?: boolean
-  notifySuccess?: boolean
+  notifyError?: string | boolean
+  notifySuccess?: string | boolean
 }
 
 interface RequestOptions extends RequestConfig {
@@ -91,14 +91,14 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<A
   try {
     const json = await sendWithRenewal<T>(path, options)
     if (notifySuccess) {
-      notify.success(json.message)
+      notify.success(typeof notifySuccess === 'string' ? notifySuccess : json.message)
     }
 
     return json
   } catch (error) {
     // Session expiry has its own single toast from renewSession()
     if (notifyError && !(error instanceof SessionExpiredError)) {
-      notify.error(getErrorMessage(error))
+      notify.error(typeof notifyError === 'string' ? notifyError : getErrorMessage(error))
     }
     throw error
   }
