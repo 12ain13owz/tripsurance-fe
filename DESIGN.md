@@ -115,6 +115,13 @@ Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (p
 - Error state: `is-invalid` on the input, message in `text-error text-sm`.
 - Selects and date pickers use FlyonUI's native `select` component and `flatpickr` (already a dependency) — do not reach for a headless-UI combobox that styles differently from the rest of the form.
 
+### Feedback: toast vs inline alert
+
+- **Toast** — Notyf (FlyonUI's toast plugin), via `notify` from `@/core/notify`. Colors come from the theme (`--color-success` / `--color-error`). Success stays 3s; error stays 6s and is dismissible. Use for results the user doesn't need to act on in place: a background action failed, a sign-in succeeded.
+- **Inline alert** — `alert alert-error text-sm` under the form or in place of the content. Use when the user must read the error to fix it (form submits) or the page has nothing else to show (initial load failed). A toast disappears; these errors must not.
+- Never show both for the same error.
+- Don't use FlyonUI's `icon-[tabler--…]` Notyf examples — the project uses lucide and has no iconify plugin; Notyf's built-in icons are used instead.
+
 ### Cards (plans, policies, quotes)
 
 ```html
@@ -212,6 +219,7 @@ Don't reach for ad hoc `rounded-full` / `rounded-xl` overrides outside this scal
 - **DON'T** build a second, parallel color-role naming scheme (PrimeNG-style `primary/secondary/success/danger/help/info/contrast`). Map onto FlyonUI's 8 roles instead (see §2).
 - **DON'T** add a dark-mode toggle, even for an admin "power user" request — that requires a product decision first, not just an AI default.
 - **DON'T** add heavy marketing motion (parallax, staggered reveals) to the purchase funnel or admin — those are transactional surfaces.
+- **DON'T** toast an error the user has to fix in a form, or a success the UI already makes obvious (a toggled switch) — see §4 Feedback.
 
 ---
 

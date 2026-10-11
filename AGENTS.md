@@ -33,6 +33,7 @@ src/
     config/         # env loading (NEXT_PUBLIC_API_URL, ...)
     flyonui/        # FlyonUI JS init script
     api/            # fetch client (apiClient, ApiError) — see "API & session contract" below
+    notify/         # toast notifications (Notyf wrapper) — used by apiClient, callable from anywhere
     session/        # admin session state + auth endpoints — see "API & session contract" below
   features/       # Business features. One folder per feature. May import core + shared.
     consumer/       # public storefront: home, plans, purchase flow
@@ -99,6 +100,22 @@ Mirrors `tripsurance-be`'s `AGENTS.md` §3 file-naming table (`Barrel | index.ts
   ```
 - **`core/session/`** — admin session state (`useSession`) and auth endpoints, built around `tripsurance-be`'s shape: a JWT access token returned in the response body and sent as a `Bearer` header, plus a refresh token in an httpOnly cookie. Don't introduce a second token model.
 - Feature-specific endpoints live in that feature's `lib/<feature>.api.ts` and go through `apiClient` — never call `fetch` directly from a feature.
+- **Error & success feedback is decided per call, in `lib/<feature>.api.ts`** — `apiClient` acts like an Angular error interceptor:
+  - Errors show a toast by default and are still rethrown. Pass `{ notifyError: false }` when the view renders the error itself.
+  - Success toasts are opt-in: `{ notifySuccess: true }` shows the backend `message`.
+  - 5xx and network failures always show a generic message — raw server errors never reach the user.
+
+  | Situation                                  | Config                                                      |
+  | ------------------------------------------ | ----------------------------------------------------------- |
+  | Form submit (sign-in, reset password, ...) | `notifyError: false` → inline `alert` under the form        |
+  | Page's initial load                        | `notifyError: false` → inline error in place of the content |
+  | Background action (toggle, row action)     | default → error toast                                       |
+  | User-visible success worth confirming      | `notifySuccess: true`                                       |
+  | Frequent/obvious actions (toggle a switch) | no success toast                                            |
+
+- In views, turn a caught error into text with `getErrorMessage(error)` from `@/core/api` — don't repeat the `instanceof ApiError` check.
+- A view that relies on the default toast still needs a `catch {}` (with a comment) around the call, so the rethrown error isn't an unhandled rejection.
+- **Expired access token is handled in `apiClient`, not in features.** A 401 from a request sent with a Bearer token triggers one shared `/auth/refresh` and a single retry. If renewal fails, the session is cleared (the dashboard layout redirects to sign-in) and one "session expired" toast is shown; callers get `SessionExpiredError`. `SessionProvider` registers the refresh/expire handlers via `registerSessionRenewal`, so `core/api` never imports `core/session`.
 
 ### API payload boundaries
 
