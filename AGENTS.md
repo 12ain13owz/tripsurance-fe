@@ -12,13 +12,15 @@ Guidance for AI assistants working in **tripsurance-fe** (consumer + admin Next.
 
 ## When to read what
 
-| Task                                                    | Read                                                        |
-| ------------------------------------------------------- | ----------------------------------------------------------- |
-| Any code change                                         | This file (`AGENTS.md`)                                     |
-| Where a file/module belongs, core vs features vs shared | Architecture & layering below                               |
-| Tailwind/FlyonUI classes, colors, layout, components    | [DESIGN.md](DESIGN.md)                                      |
-| BE response shape / auth contract                       | `tripsurance-be` `AGENTS.md` §4 (response & error contract) |
-| Commit style / git workflow                             | §§ below                                                    |
+| Task                                                    | Read                                                                                                   |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Any code change                                         | This file (`AGENTS.md`)                                                                                |
+| What a feature does (data, rules, endpoints)            | `tripsurance-be/docs/features/<feature>.md` — read before building its screens, instead of the BE code |
+| What to build next, locked product decisions            | Root `ROADMAP.md`                                                                                      |
+| Where a file/module belongs, core vs features vs shared | Architecture & layering below                                                                          |
+| Tailwind/FlyonUI classes, colors, layout, components    | [DESIGN.md](DESIGN.md)                                                                                 |
+| BE response shape / auth contract                       | `tripsurance-be` `AGENTS.md` §4 (response & error contract)                                            |
+| Commit style / git workflow                             | §§ below                                                                                               |
 
 ## Architecture & layering
 
