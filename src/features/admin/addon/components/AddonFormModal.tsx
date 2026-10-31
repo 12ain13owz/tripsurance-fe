@@ -87,10 +87,9 @@ export function AddonFormModal({
         onSubmit={(e) => void handleSubmit(onSubmit)(e)}
       >
         {addon ? (
-          <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2" title="Code cannot be changed after creation">
             <span className="text-muted text-sm">Code</span>
-            <span className="text-base-content font-medium">{addon.code}</span>
-            <span className="text-muted text-sm">Code cannot be changed after creation</span>
+            <span className="badge badge-soft">{addon.code}</span>
           </div>
         ) : (
           <TextField control={control} name="code" label="Code, e.g. baggage-plus" size="md" />
@@ -103,25 +102,29 @@ export function AddonFormModal({
           options={pricingTypeOptions}
           size="md"
         />
-        <TextField
-          control={control}
-          name="price"
-          label="Price (THB, incl. stamp duty & VAT)"
-          size="md"
-        />
-        <TextField
-          control={control}
-          name="coverageAmount"
-          label="Coverage amount (THB, optional)"
-          size="md"
-        />
+
+        <div className="flex flex-col gap-2">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <TextField control={control} name="price" label="Price (฿)" size="md" />
+            <TextField control={control} name="coverageAmount" label="Coverage (฿)" size="md" />
+          </div>
+          <p className="text-muted text-sm">
+            Prices include stamp duty &amp; VAT. Leave coverage empty if the add-on has none.
+          </p>
+        </div>
 
         {addon ? (
           <Controller
             control={control}
             name="isActive"
             render={({ field }) => (
-              <label className="flex items-center gap-3">
+              <label className="border-base-300 rounded-box flex items-center justify-between gap-4 border p-3">
+                <span className="flex flex-col">
+                  <span className="text-base-content font-medium">Active</span>
+                  <span className="text-muted text-sm">
+                    Shown to customers on plans that offer it
+                  </span>
+                </span>
                 <input
                   type="checkbox"
                   className="switch switch-primary"
@@ -129,15 +132,10 @@ export function AddonFormModal({
                   onChange={(event) => field.onChange(event.target.checked)}
                   onBlur={field.onBlur}
                 />
-                <span className="label-text">Active</span>
               </label>
             )}
           />
-        ) : (
-          <p className="text-muted text-sm">
-            New add-ons start inactive — activate one from the list when it&apos;s ready.
-          </p>
-        )}
+        ) : null}
 
         {errorMessage && (
           <div className="alert alert-error text-sm" role="alert">
