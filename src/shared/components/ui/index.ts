@@ -1,3 +1,5 @@
 export * from './Pagination'
 export * from './Panel'
 export * from './SplashScreen'
+export * from './Modal'
+export * from './SortableTable'
