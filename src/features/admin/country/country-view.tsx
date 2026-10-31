@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { getErrorMessage } from '@/core/api'
 import { Pagination, Panel } from '@/shared/components/ui'
 import { getCountryName } from '@/shared/utils'
 import { CountryFilter } from './components/CountryFilter'
@@ -33,7 +34,7 @@ export function CountryView() {
   useEffect(() => {
     getCountries()
       .then(setCountries)
-      .catch(() => setLoadError('Unable to load countries'))
+      .catch((error: unknown) => setLoadError(getErrorMessage(error)))
   }, [])
 
   const rows = useMemo<CountryRow[]>(
@@ -72,12 +73,11 @@ export function CountryView() {
     }
 
     setPendingId(country.id)
-    setLoadError(null)
     try {
       const updated = await updateCountryStatus(country.id, !country.isActive)
       setCountries((prev) => prev?.map((c) => (c.id === updated.id ? updated : c)) ?? prev)
     } catch {
-      setLoadError('Unable to update country status')
+      // apiClient already showed the error toast; the switch stays at its previous value
     } finally {
       setPendingId(null)
     }
@@ -85,7 +85,11 @@ export function CountryView() {
 
   return (
     <Panel className="gap-4 sm:max-h-[calc(100svh-var(--spacing-admin-topbar)-3rem)]">
-      {loadError && <p className="text-error text-sm">{loadError}</p>}
+      {loadError && (
+        <div className="alert alert-error text-sm" role="alert">
+          {loadError}
+        </div>
+      )}
       {!loadError && !countries && <p className="text-muted text-sm">Loading…</p>}
       {countries && (
         <>
