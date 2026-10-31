@@ -100,14 +100,22 @@ Use **FlyonUI's native classes directly** (`btn`, `input`, `select`, `card`, `st
 
 ### Buttons
 
-| Role             | Class                      | Examples                                                                              |
-| ---------------- | -------------------------- | ------------------------------------------------------------------------------------- |
-| Primary action   | `btn btn-primary`          | Buy now, Continue, Pay, Submit claim                                                  |
-| Secondary / back | `btn btn-outline`          | Back, Change plan, Cancel (non-destructive)                                           |
-| Quiet / icon     | `btn btn-ghost btn-square` | Qty stepper, close icon, table row actions                                            |
-| Destructive      | `btn btn-error`            | Cancel policy, delete admin record — always behind a confirm step, never a bare click |
+| Role             | Class                     | Examples                                                                              |
+| ---------------- | ------------------------- | ------------------------------------------------------------------------------------- |
+| Primary action   | `btn btn-primary`         | Buy now, Continue, Pay, Submit claim                                                  |
+| Secondary / back | `btn btn-outline`         | Back, Change plan, Cancel (non-destructive)                                           |
+| Quiet / icon     | `btn btn-text btn-square` | Shell chrome (menu, account), pagination, qty stepper                                 |
+| Destructive      | `btn btn-error`           | Cancel policy, delete admin record — always behind a confirm step, never a bare click |
 
 Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (primary purchase CTAs, mobile tap targets).
+
+**Icon-only buttons** put a lucide icon (`size-4` in `btn-sm`) inside a FlyonUI button; the icon takes the button's color through `currentColor`, so never color the icon itself. Always give an `aria-label` that names the action and the row (`Edit baggage-plus`). FlyonUI has no `btn-ghost` — the quiet variant is `btn-text`.
+
+| Icon button (admin) | Class                                           |
+| ------------------- | ----------------------------------------------- |
+| Row action (edit)   | `btn btn-soft btn-primary btn-square btn-sm`    |
+| Drag handle         | `btn btn-outline btn-primary btn-square btn-sm` |
+| Modal close         | `btn btn-primary btn-square btn-sm`             |
 
 ### Forms
 
@@ -144,8 +152,16 @@ Rebuild the old draft's 3-tier stepper (it hand-rolled separate mobile/tablet/de
 ### Admin shell
 
 - Sidebar: `bg-base-200 border-r border-base-300`; active nav item `bg-primary/10 text-primary font-medium`.
-- Data tables: FlyonUI `table` (`table table-zebra` for long lists), row actions as ghost icon buttons, wrap in `overflow-x-auto` rather than reflowing to cards.
 - No marketing motion (Framer/GSAP-style entrance animation) anywhere in `/admin` — dense and fast, not expressive.
+
+### Admin data lists (table ≥ `md`, cards < `md`)
+
+Every admin list — countries, add-ons, plans, … — renders through one shared data-table component, so layout, empty state, reordering and pagination look the same everywhere. Features describe their columns once; they never write their own `<table>` or card markup.
+
+- **`md` and up — table:** FlyonUI `table` (`table-striped table table-fixed`), helper/empty text `text-muted text-sm`, numbers `text-end tabular-nums`, row actions as icon buttons in the last column.
+- **Below `md` — cards:** one card per row (`border-base-300 rounded-box border`), title field at the top, actions top-right, the remaining fields as label/value pairs. Don't fall back to a horizontally scrolling table on mobile: a 6–7 column admin table is unreadable at phone width, and dragging inside a sideways-scrolling table is unusable.
+- **Reordering is per list, opt-in.** Lists ordered by the admin (`sortOrder`: add-ons, plans) get a drag handle as the first column/card element; lists with a natural order (countries, by name) don't. Only the handle starts a drag, so row text stays selectable for copying. While the list is filtered — or a reorder/toggle is still saving — the handle is disabled with a hint, because a reorder must send every row.
+- **Pagination is per list, opt-in, and never combined with reordering.** Long reference lists (countries) paginate with the shared `Pagination` plus a `Showing X–Y of N` line; reorderable lists show every row on one page, since a row can't be dragged across pages and the reorder request needs the full list.
 
 ### Consumer navigation
 
@@ -228,7 +244,8 @@ Don't reach for ad hoc `rounded-full` / `rounded-xl` overrides outside this scal
 - Breakpoints: `sm` 640 / `md` 768 / `lg` 1024 / `xl` 1280 (Tailwind/FlyonUI defaults — don't override).
 - **Consumer nav:** inline desktop nav → slide-down mobile menu (`menu-button` → `mobile-nav` pattern from the old draft; port the structure, replace literal colors with tokens).
 - **Purchase stepper:** see §4 — horizontal steps ≥`lg`, condensed pills on `md`, single progress bar `<md`.
-- **Admin sidebar:** collapses to icon-only or an off-canvas drawer `<lg`; tables scroll horizontally in `overflow-x-auto` rather than reflowing into cards.
+- **Admin sidebar:** collapses to icon-only or an off-canvas drawer `<lg`.
+- **Admin data lists:** table from `md` up, one card per row below `md` — see §4 Admin data lists.
 - **Touch targets:** ≥44px on mobile forms and buttons — use `btn-lg` / `input-lg` on primary purchase-flow controls.
 
 ---
@@ -251,7 +268,7 @@ Quick reference when generating UI:
 Example prompts that fit this system:
 
 - "Add a new consumer marketing section: `bg-base-200` alternating background, `btn btn-primary btn-lg` CTA, no dark mode variant."
-- "Build an admin policy table row with `btn btn-ghost btn-square` icon actions; wrap delete in the confirm pattern and use `btn-error` only inside that confirm."
+- "Add a policy list through the shared data-table: `btn btn-soft btn-primary btn-square btn-sm` row actions; wrap delete in the confirm pattern and use `btn-error` only inside that confirm."
 - "Add a claim status badge using `badge-warning` for pending and `badge-error` for rejected — don't invent a new color."
 
 This file is the single design source of truth for `tripsurance-fe`. Read it alongside [AGENTS.md](AGENTS.md) before writing any UI code.
