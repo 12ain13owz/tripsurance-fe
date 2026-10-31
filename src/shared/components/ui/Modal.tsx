@@ -62,14 +62,16 @@ export function Modal({ open, title, onClose, children, footer, size = 'md' }: M
             </h3>
             <button
               type="button"
-              className="btn btn-ghost btn-square btn-sm"
+              className="btn btn-primary btn-square btn-sm"
               aria-label="Close"
               onClick={onClose}
             >
               <X className="size-4" />
             </button>
           </div>
-          <div className="modal-body">{children}</div>
+          <div className="modal-body">
+            <div className="pt-2">{children}</div>
+          </div>
           {footer && <div className="modal-footer">{footer}</div>}
         </div>
       </div>
