@@ -5,6 +5,7 @@ export const adminRoutes = {
   overview: '/admin/overview',
   plans: '/admin/plans',
   countries: '/admin/countries',
+  addons: '/admin/addons',
   funnel: '/admin/funnel',
   routes: '/admin/routes',
 } as const

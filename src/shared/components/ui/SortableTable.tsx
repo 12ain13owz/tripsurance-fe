@@ -120,7 +120,7 @@ export function SortableRow({
           <button
             ref={setActivatorNodeRef}
             type="button"
-            className="btn btn-ghost btn-square btn-sm cursor-grab active:cursor-grabbing"
+            className="btn btn-square btn-outline btn-primary btn-sm cursor-grab active:cursor-grabbing"
             disabled={disabled}
             {...attributes}
             {...listeners}

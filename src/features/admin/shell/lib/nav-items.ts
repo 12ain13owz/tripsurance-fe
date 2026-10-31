@@ -1,4 +1,4 @@
-import { Funnel, Globe, LayoutDashboard, Route, ShieldCheck } from 'lucide-react'
+import { Funnel, Globe, LayoutDashboard, PackagePlus, Route, ShieldCheck } from 'lucide-react'
 import { adminRoutes } from '@/shared/routes'
 import type { LucideIcon } from 'lucide-react'
 
@@ -28,6 +28,13 @@ export const adminNavItems: AdminNavItem[] = [
     subtitle: 'Policies sold by destination country',
     icon: Globe,
   },
+  {
+    href: adminRoutes.addons,
+    label: 'Add-ons',
+    subtitle: 'Optional extras that plans can offer',
+    icon: PackagePlus,
+  },
+
   {
     href: adminRoutes.funnel,
     label: 'Purchase funnel',
