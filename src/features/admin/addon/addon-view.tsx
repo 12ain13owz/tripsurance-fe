@@ -158,18 +158,16 @@ export function AddonView() {
           {hasFilters && filteredAddons.length > 0 && (
             <p className="text-muted text-sm">Clear filters to reorder add-ons.</p>
           )}
-          <div className="min-h-0 flex-1 overflow-auto">
-            <AddonTable
-              rows={filteredAddons}
-              emptyMessage={addons.length === 0 ? 'No add-ons yet' : 'No add-ons found'}
-              reorderDisabled={hasFilters || isReordering || pendingId !== null}
-              reorderHint={hasFilters ? 'Clear filters to reorder' : undefined}
-              pendingId={pendingId}
-              onReorder={(rows) => void handleReorder(rows)}
-              onToggle={(addon) => void handleToggle(addon)}
-              onEdit={openForm}
-            />
-          </div>
+          <AddonTable
+            rows={filteredAddons}
+            emptyMessage={addons.length === 0 ? 'No add-ons yet' : 'No add-ons found'}
+            reorderDisabled={hasFilters || isReordering || pendingId !== null}
+            reorderHint={hasFilters ? 'Clear filters to reorder' : undefined}
+            pendingId={pendingId}
+            onReorder={(rows) => void handleReorder(rows)}
+            onToggle={(addon) => void handleToggle(addon)}
+            onEdit={openForm}
+          />
         </>
       )}
       {form && (

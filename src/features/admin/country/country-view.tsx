@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { getErrorMessage } from '@/core/api'
-import { Pagination, Panel } from '@/shared/components/ui'
+import { Panel } from '@/shared/components/ui'
 import { getCountryName } from '@/shared/utils'
 import { CountryFilter } from './components/CountryFilter'
 import { CountryTable } from './components/CountryTable'
@@ -94,21 +94,17 @@ export function CountryView() {
       {countries && (
         <>
           <CountryFilter control={control} />
-          <div className="min-h-0 flex-1 overflow-auto">
-            <CountryTable
-              rows={pageRows}
-              pendingId={pendingId}
-              onToggle={(country) => void handleToggle(country)}
-            />
-          </div>
-          {filteredRows.length > 0 && (
-            <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-              <p className="text-muted text-sm tabular-nums">
-                Showing {pageStart + 1}–{pageStart + pageRows.length} of {filteredRows.length}
-              </p>
-              <Pagination page={currentPage} pageCount={pageCount} onPageChange={setPage} />
-            </div>
-          )}
+          <CountryTable
+            rows={pageRows}
+            pagination={{
+              page: currentPage,
+              pageSize: PAGE_SIZE,
+              total: filteredRows.length,
+              onPageChange: setPage,
+            }}
+            pendingId={pendingId}
+            onToggle={(country) => void handleToggle(country)}
+          />
         </>
       )}
     </Panel>

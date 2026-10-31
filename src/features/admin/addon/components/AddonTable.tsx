@@ -1,5 +1,6 @@
 import { Pencil } from 'lucide-react'
-import { SortableRow, SortableTable } from '@/shared/components/ui'
+import { DataTable } from '@/shared/components/ui'
+import type { DataTableColumn } from '@/shared/components/ui'
 import { formatSatang } from '@/shared/utils'
 import { addonPricingTypeLabels } from '../lib/addon.type'
 import type { Addon } from '../lib/addon.type'
@@ -26,70 +27,85 @@ export function AddonTable({
   onToggle,
   onEdit,
 }: AddonTableProps) {
-  if (rows.length === 0) {
-    return <p className="text-muted py-6 text-center text-sm">{emptyMessage}</p>
-  }
+  const columns: DataTableColumn<Addon>[] = [
+    {
+      key: 'code',
+      header: 'Code',
+      cell: (row) => row.code,
+      className: 'text-base-content truncate',
+      card: 'title',
+    },
+    {
+      key: 'pricing',
+      header: 'Pricing',
+      cell: (row) => addonPricingTypeLabels[row.pricingType],
+      className: 'w-48',
+    },
+    {
+      key: 'price',
+      header: 'Price',
+      cell: (row) => formatSatang(row.price),
+      className: 'w-32 tabular-nums',
+      align: 'end',
+    },
+    {
+      key: 'coverage',
+      header: 'Coverage',
+      cell: (row) =>
+        row.coverageAmount === null ? (
+          <span className="text-muted">—</span>
+        ) : (
+          formatSatang(row.coverageAmount)
+        ),
+      className: 'w-32 tabular-nums',
+      align: 'end',
+    },
+    {
+      key: 'active',
+      header: 'Active',
+      cell: (row) => (
+        <input
+          type="checkbox"
+          className="switch switch-primary"
+          checked={row.isActive}
+          disabled={pendingId === row.id}
+          onChange={() => onToggle(row)}
+          aria-label={`Toggle ${row.code} status`}
+        />
+      ),
+      className: 'w-24',
+      card: 'action',
+    },
+    {
+      key: 'edit',
+      header: 'Actions',
+      hideHeader: true,
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn btn-soft btn-primary btn-square btn-sm"
+          aria-label={`Edit ${row.code}`}
+          onClick={() => onEdit(row)}
+        >
+          <Pencil className="size-4" />
+        </button>
+      ),
+      className: 'w-16',
+      card: 'action',
+    },
+  ]
 
   return (
-    <SortableTable items={rows} disabled={reorderDisabled} onReorder={onReorder}>
-      <table className="table-striped table min-w-2xl table-fixed">
-        <thead>
-          <tr>
-            <th className="w-12">
-              <span className="sr-only">Reorder</span>
-            </th>
-            <th>Code</th>
-            <th className="w-48">Pricing</th>
-            <th className="w-32 text-end">Price</th>
-            <th className="w-32 text-end">Coverage</th>
-            <th className="w-24">Active</th>
-            <th className="w-16">
-              <span className="sr-only">Actions</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <SortableRow
-              key={row.id}
-              id={row.id}
-              handleLabel={`Reorder ${row.code}`}
-              disabledHint={reorderHint}
-            >
-              <td className="text-base-content truncate">{row.code}</td>
-              <td>{addonPricingTypeLabels[row.pricingType]}</td>
-              <td className="text-end tabular-nums">{formatSatang(row.price)}</td>
-              <td className="text-end tabular-nums">
-                {row.coverageAmount === null ? (
-                  <span className="text-muted">—</span>
-                ) : (
-                  formatSatang(row.coverageAmount)
-                )}
-              </td>
-              <td>
-                <input
-                  type="checkbox"
-                  className="switch switch-primary"
-                  checked={row.isActive}
-                  disabled={pendingId === row.id}
-                  onChange={() => onToggle(row)}
-                  aria-label={`Toggle ${row.code} status`}
-                />
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-soft btn-primary btn-square btn-sm"
-                  aria-label={`Edit ${row.code}`}
-                  onClick={() => onEdit(row)}
-                >
-                  <Pencil className="size-4" />
-                </button>
-              </td>
-            </SortableRow>
-          ))}
-        </tbody>
-      </table>
-    </SortableTable>
+    <DataTable
+      rows={rows}
+      columns={columns}
+      emptyMessage={emptyMessage}
+      reorder={{
+        onReorder,
+        getRowLabel: (row) => row.code,
+        disabled: reorderDisabled,
+        disabledHint: reorderHint,
+      }}
+    />
   )
 }
