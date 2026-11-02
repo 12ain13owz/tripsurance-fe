@@ -2,7 +2,7 @@
 
 import { Plus, Trash2 } from 'lucide-react'
 import { useFieldArray, useWatch } from 'react-hook-form'
-import { TextField } from '@/shared/components/forms'
+import { NumberField } from '@/shared/components/forms'
 import { getTierMinDays } from '../lib/plan-tier'
 import type { PlanFormValue } from '../schemas/plan-form.schema'
 import type { Control } from 'react-hook-form'
@@ -25,12 +25,13 @@ export function PlanTierFields({ control }: PlanTierFieldsProps) {
           <span className="text-muted text-sm sm:leading-10">
             From day {getTierMinDays(tiers, index) ?? '…'}
           </span>
-          <TextField control={control} name={`tiers.${index}.maxDays`} label="To day" size="md" />
-          <TextField
+          <NumberField control={control} name={`tiers.${index}.maxDays`} label="To day" size="md" />
+          <NumberField
             control={control}
             name={`tiers.${index}.price`}
             label="Price / traveller (฿)"
             size="md"
+            decimals={2}
           />
           <button
             type="button"
