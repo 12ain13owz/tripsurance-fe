@@ -1,3 +1,4 @@
+import { Pencil } from 'lucide-react'
 import { DataTable } from '@/shared/components/ui'
 import type { DataTableColumn } from '@/shared/components/ui'
 import { formatSatang } from '@/shared/utils'
@@ -10,14 +11,12 @@ function formatCount(count: number, singular: string, plural: string): string {
 // The last tier's maxDays is the plan's max trip length
 function formatTripLength(plan: Plan): string {
   const maxDays = plan.tiers.at(-1)?.maxDays ?? 0
-  return `1–${maxDays} days`
+  return `Up to ${maxDays} days`
 }
 
-function formatPriceRange(plan: Plan): string {
-  const prices = plan.tiers.map((tier) => tier.pricePerTraveller)
-  const min = Math.min(...prices)
-  const max = Math.max(...prices)
-  return min === max ? formatSatang(min) : `${formatSatang(min)} – ${formatSatang(max)}`
+// Lowest tier price, as the storefront shows it; every tier is in the edit form
+function formatStartingPrice(plan: Plan): string {
+  return `From ${formatSatang(Math.min(...plan.tiers.map((tier) => tier.pricePerTraveller)))}`
 }
 
 interface PlanTableProps {
@@ -29,6 +28,7 @@ interface PlanTableProps {
   pendingId: string | null
   onReorder: (rows: Plan[]) => void
   onToggle: (plan: Plan) => void
+  onEdit: (plan: Plan) => void
 }
 
 export function PlanTable({
@@ -39,6 +39,7 @@ export function PlanTable({
   pendingId,
   onReorder,
   onToggle,
+  onEdit,
 }: PlanTableProps) {
   const columns: DataTableColumn<Plan>[] = [
     {
@@ -52,7 +53,8 @@ export function PlanTable({
       key: 'countries',
       header: 'Countries',
       cell: (row) => formatCount(row.countries.length, 'country', 'countries'),
-      className: 'w-32',
+      // Secondary: hidden in the table until xl so it fits beside the sidebar; cards still show it
+      className: 'hidden w-28 xl:table-cell',
     },
     {
       key: 'tripLength',
@@ -63,8 +65,8 @@ export function PlanTable({
     {
       key: 'price',
       header: 'Price / traveller',
-      cell: formatPriceRange,
-      className: 'w-56 tabular-nums',
+      cell: formatStartingPrice,
+      className: 'w-36 tabular-nums',
       align: 'end',
     },
     {
@@ -76,7 +78,7 @@ export function PlanTable({
         ) : (
           formatCount(row.addons.length, 'add-on', 'add-ons')
         ),
-      className: 'w-28',
+      className: 'hidden w-24 xl:table-cell',
     },
     {
       key: 'active',
@@ -91,7 +93,23 @@ export function PlanTable({
           aria-label={`Toggle ${row.code} status`}
         />
       ),
-      className: 'w-24',
+      className: 'w-20',
+      card: 'action',
+    },
+    {
+      key: 'edit',
+      header: '',
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn btn-soft btn-primary btn-square btn-sm"
+          aria-label={`Edit ${row.code}`}
+          onClick={() => onEdit(row)}
+        >
+          <Pencil className="size-4" />
+        </button>
+      ),
+      className: 'w-16',
       card: 'action',
     },
   ]
