@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react'
 import { SelectField, TextField } from '@/shared/components/forms'
 import type { SelectOption } from '@/shared/components/forms'
-import { countryRegions } from '../lib/country.type'
+import { countryRegions } from '@/shared/utils'
 import type { CountryFilters } from '../lib/country.type'
 import type { Control } from 'react-hook-form'
 

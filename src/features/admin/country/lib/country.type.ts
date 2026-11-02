@@ -1,3 +1,5 @@
+import type { CountryRegion } from '@/shared/utils'
+
 export interface Country {
   id: string
   isoCode: string
@@ -5,16 +7,6 @@ export interface Country {
   createdAt: string
   updatedAt: string
 }
-
-export const countryRegions = [
-  'Africa',
-  'Americas',
-  'Antarctica',
-  'Asia',
-  'Europe',
-  'Oceania',
-] as const
-export type CountryRegion = (typeof countryRegions)[number]
 
 export interface CountryFilters {
   search: string
