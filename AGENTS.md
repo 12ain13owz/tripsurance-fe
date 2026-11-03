@@ -42,6 +42,8 @@ src/
     admin/          # admin screens: auth, shell, dashboard, country, ...
   shared/         # Pure building blocks. No feature/business logic.
     components/     # reusable UI (forms/, ...)
+    const/          # constants shared across features (planCoverageCategories, mirrored from the BE)
+    hooks/          # framework-level React hooks (useMediaQuery, ...)
     i18n/           # next-intl routing, messages
     routes/         # route path constants (adminRoutes, ...)
     utils/          # cn(), other framework-agnostic helpers
