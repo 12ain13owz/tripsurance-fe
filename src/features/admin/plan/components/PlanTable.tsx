@@ -8,8 +8,8 @@ function formatCount(count: number, singular: string, plural: string): string {
   return `${count} ${count === 1 ? singular : plural}`
 }
 
-// The last tier's maxDays is the plan's max trip length
-function formatTripLength(plan: Plan): string {
+// The last tier's maxDays is the plan's max trip duration
+function formatDuration(plan: Plan): string {
   const maxDays = plan.tiers.at(-1)?.maxDays ?? 0
   return `Up to ${maxDays} days`
 }
@@ -64,9 +64,9 @@ export function PlanTable({
       className: 'hidden w-28 xl:table-cell',
     },
     {
-      key: 'tripLength',
-      header: 'Trip length',
-      cell: formatTripLength,
+      key: 'duration',
+      header: 'Duration',
+      cell: formatDuration,
       className: 'w-32',
     },
     {

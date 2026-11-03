@@ -146,7 +146,7 @@ export function PlanView() {
       const saved = editing
         ? await updatePlan(editing.id, {
             isActive: value.isActive,
-            isFeatured: value.isActive,
+            isFeatured: value.isFeatured,
             tiers: toTiers(value.tiers),
             coverages: toCoverages(value.coverages),
             countryIds: value.countryIds,
