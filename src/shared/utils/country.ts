@@ -8,8 +8,6 @@ export const countryRegions = [
 ] as const
 export type CountryRegion = (typeof countryRegions)[number]
 
-const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-
 const isoCodesByRegion: Record<CountryRegion, string> = {
   Africa:
     'DZ AO BJ BW IO BF BI CV CM CF TD KM CG CD CI DJ EG GQ ER SZ ET TF GA GM GH GN GW KE LS LR LY MG MW ML MR MU YT MA MZ NA NE NG RE RW SH ST SN SC SL SO ZA SS SD TZ TG TN UG EH ZM ZW',
@@ -28,10 +26,23 @@ const regionByIsoCode = new Map<string, CountryRegion>(
   )
 )
 
-export function getCountryName(isoCode: string): string {
-  return regionNames.of(isoCode) ?? isoCode
-}
+const regionNamesByLocale = new Map<string, Intl.DisplayNames>()
 
 export function getCountryRegion(isoCode: string): CountryRegion | null {
   return regionByIsoCode.get(isoCode) ?? null
+}
+
+// One formatter per locale, built on first use and reused — a country list calls this per row
+function getRegionNames(locale: string): Intl.DisplayNames {
+  let regionNames = regionNamesByLocale.get(locale)
+  if (!regionNames) {
+    regionNames = new Intl.DisplayNames([locale], { type: 'region' })
+    regionNamesByLocale.set(locale, regionNames)
+  }
+  return regionNames
+}
+
+/** English by default (the admin has no i18n); consumer screens pass the active locale */
+export function getCountryName(isoCode: string, locale = 'en'): string {
+  return getRegionNames(locale).of(isoCode) ?? isoCode
 }
