@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { getErrorMessage } from '@/core/api'
 import { Panel } from '@/shared/components/ui'
+import { planCoverageCategories } from '@/shared/const'
 import { bahtToSatang } from '@/shared/utils'
 import { PlanFilter } from './components/PlanFilter'
 import { PlanFormModal } from './components/PlanFormModal'
@@ -19,7 +20,6 @@ import {
   updatePlan,
   updatePlanStatus,
 } from './lib/plan.api'
-import { planCoverageCategories } from './lib/plan.type'
 import type {
   Plan,
   PlanAddonOption,

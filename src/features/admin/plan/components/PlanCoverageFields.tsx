@@ -1,5 +1,6 @@
 import { NumberField } from '@/shared/components/forms'
-import { planCoverageCategories, planCoverageCategoryLabels } from '../lib/plan.type'
+import { planCoverageCategories } from '@/shared/const'
+import { planCoverageCategoryLabels } from '../lib/plan.type'
 import type { PlanFormValue } from '../schemas/plan-form.schema'
 import type { Control } from 'react-hook-form'
 

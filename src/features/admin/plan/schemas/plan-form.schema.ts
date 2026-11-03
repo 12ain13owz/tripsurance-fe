@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { planCoverageCategories } from '../lib/plan.type'
+import { planCoverageCategories } from '@/shared/const'
 
 const CODE_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/
 const BAHT_PATTERN = /^\d+(\.\d{1,2})?$/
