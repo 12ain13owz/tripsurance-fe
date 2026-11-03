@@ -172,6 +172,26 @@ bg-base-100/90 backdrop-blur-sm shadow-sm   /* scrolled or menu open */
 bg-transparent                              /* top of hero */
 ```
 
+### Motion
+
+Animation library: **framer-motion**, through the primitives in `@/shared/components/motions` —
+reach for those before writing a one-off `motion.*` element.
+
+| Primitive        | Use for                                                                  |
+| ---------------- | ------------------------------------------------------------------------ |
+| `MotionProvider` | Wraps the consumer layout once (`reducedMotion="user"`)                  |
+| `TextReveal`     | Hero / page headings: word-by-word blur-in                               |
+| `FadeIn`         | Marketing sections: fade up once when scrolled into view                 |
+| `SpotlightCard`  | Interactive cards (plans): pointer-following glow from `--color-primary` |
+
+- **Where:** consumer marketing pages only (home, plan listing). No motion in `/admin` or the
+  purchase funnel beyond FlyonUI's own transitions (§1).
+- **What never moves:** prices and coverage amounts — no count-up, no number animation.
+- **Reduced motion:** `MotionProvider` sets `reducedMotion="user"`; don't add per-component checks.
+- **Thai text:** split text by word with `Intl.Segmenter`, never by character — character splits
+  tear vowels and tone marks off their consonant.
+- **One easing:** `EASE_OUT` for entrances; durations 0.3–0.7s.
+
 ---
 
 ## 5. Layout principles
