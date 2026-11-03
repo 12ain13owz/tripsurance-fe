@@ -34,7 +34,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         )}
       >
         <Image
-          src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=2048&q=80"
+          src="/images/main.png"
           alt=""
           aria-hidden="true"
           fill
