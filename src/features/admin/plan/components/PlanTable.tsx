@@ -16,7 +16,7 @@ function formatTripLength(plan: Plan): string {
 
 // Lowest tier price, as the storefront shows it; every tier is in the edit form
 function formatStartingPrice(plan: Plan): string {
-  return `From ${formatSatang(Math.min(...plan.tiers.map((tier) => tier.pricePerTraveller)))}`
+  return `${formatSatang(Math.min(...plan.tiers.map((tier) => tier.pricePerTraveller)))}`
 }
 
 interface PlanTableProps {
@@ -45,7 +45,14 @@ export function PlanTable({
     {
       key: 'code',
       header: 'Code',
-      cell: (row) => row.code,
+      cell: (row) => (
+        <span className="flex items-center gap-2">
+          <span className="truncate">{row.code}</span>
+          {row.isFeatured && (
+            <span className="badge badge-soft badge-accent badge-sm">Featured</span>
+          )}
+        </span>
+      ),
       className: 'text-base-content truncate',
       card: 'title',
     },
@@ -64,7 +71,7 @@ export function PlanTable({
     },
     {
       key: 'price',
-      header: 'Price / traveller',
+      header: 'Price',
       cell: formatStartingPrice,
       className: 'w-36 tabular-nums',
       align: 'end',

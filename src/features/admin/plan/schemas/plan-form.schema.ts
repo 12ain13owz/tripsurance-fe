@@ -38,6 +38,7 @@ export const planFormSchema = z.object({
     .max(50, 'Code must be at most 50 characters')
     .regex(CODE_PATTERN, 'Use lowercase letters, numbers and single hyphens, e.g. asia-basic'),
   isActive: z.boolean(),
+  isFeatured: z.boolean(),
   // minDays isn't a field (each tier starts after the previous one), so gaps and overlaps
   // can't happen — only maxDays going down or staying the same can
   tiers: z

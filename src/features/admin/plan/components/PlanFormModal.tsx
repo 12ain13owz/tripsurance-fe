@@ -15,6 +15,7 @@ import { planFormSchema } from '../schemas/plan-form.schema'
 import type { Plan, PlanAddonOption, PlanCountryOption } from '../lib/plan.type'
 import type { PlanFormValue } from '../schemas/plan-form.schema'
 import type { ReactNode } from 'react'
+import type { Control } from 'react-hook-form'
 
 function toBahtInput(satang: number): string {
   return satangToBaht(satang).toFixed(2)
@@ -40,6 +41,7 @@ function getDefaultValues(
     return {
       code: '',
       isActive: false,
+      isFeatured: false,
       tiers: [{ maxDays: '', price: '' }],
       coverages,
       countryIds: [],
@@ -53,6 +55,7 @@ function getDefaultValues(
   return {
     code: plan.code,
     isActive: plan.isActive,
+    isFeatured: plan.isFeatured,
     tiers: plan.tiers.map((tier) => ({
       maxDays: String(tier.maxDays),
       price: toBahtInput(tier.pricePerTraveller),
@@ -82,6 +85,37 @@ function FormSection({ title, description, error, children }: FormSectionProps) 
       {children}
       {error && <p className="text-error text-sm">{error}</p>}
     </section>
+  )
+}
+
+interface FormSwitchProps {
+  control: Control<PlanFormValue>
+  name: 'isActive' | 'isFeatured'
+  label: string
+  description: string
+}
+
+function FormSwitch({ control, name, label, description }: FormSwitchProps) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <label className="border-base-300 rounded-box flex items-center justify-between gap-4 border p-3">
+          <span className="flex flex-col">
+            <span className="text-base-content font-medium">{label}</span>
+            <span className="text-muted text-sm">{description}</span>
+          </span>
+          <input
+            type="checkbox"
+            className="switch switch-primary"
+            checked={field.value}
+            onChange={(event) => field.onChange(event.target.checked)}
+            onBlur={field.onBlur}
+          />
+        </label>
+      )}
+    />
   )
 }
 
@@ -149,25 +183,20 @@ export function PlanFormModal({
         )}
 
         {plan ? (
-          <Controller
-            control={control}
-            name="isActive"
-            render={({ field }) => (
-              <label className="border-base-300 rounded-box flex items-center justify-between gap-4 border p-3">
-                <span className="flex flex-col">
-                  <span className="text-base-content font-medium">Active</span>
-                  <span className="text-muted text-sm">Shown to customers on the storefront</span>
-                </span>
-                <input
-                  type="checkbox"
-                  className="switch switch-primary"
-                  checked={field.value}
-                  onChange={(event) => field.onChange(event.target.checked)}
-                  onBlur={field.onBlur}
-                />
-              </label>
-            )}
-          />
+          <div className="flex flex-col gap-3">
+            <FormSwitch
+              control={control}
+              name="isActive"
+              label="Active"
+              description="Shown to customers on the storefront"
+            />
+            <FormSwitch
+              control={control}
+              name="isFeatured"
+              label="Featured"
+              description="Highlighted as recommended on the storefront"
+            />
+          </div>
         ) : null}
 
         <FormSection

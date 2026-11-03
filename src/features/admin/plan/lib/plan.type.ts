@@ -58,6 +58,7 @@ export interface Plan {
   code: string
   type: 'SINGLE_TRIP'
   isActive: boolean
+  isFeatured: boolean
   sortOrder: number
   /** Ordered by minDays */
   tiers: PlanPriceTier[]
@@ -94,6 +95,7 @@ export interface CreatePlanPayload {
 
 export interface UpdatePlanPayload {
   isActive?: boolean
+  isFeatured?: boolean
   tiers?: PlanPriceTier[]
   coverages?: PlanCoverage[]
   countryIds?: string[]
