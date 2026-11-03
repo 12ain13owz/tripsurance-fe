@@ -1,0 +1,65 @@
+{
+  "PLANS": {
+    "PAGE": {
+      "TITLE": "เลือกแผนประกันเดินทางที่ใช่สำหรับทริปของคุณ",
+      "SUBTITLE": "ราคาต่อคนตามจำนวนวันเดินทาง รวมอากรแสตมป์และภาษีมูลค่าเพิ่มแล้ว",
+      "DESTINATION_LABEL": "ปลายทาง",
+      "ALL_DESTINATIONS": "ทุกประเทศ",
+      "EMPTY_TITLE": "ยังไม่มีแผนที่คุ้มครอง {country}",
+      "EMPTY_HINT": "ลองเลือกปลายทางอื่น หรือดูแผนทั้งหมด",
+      "LOAD_ERROR": "โหลดแผนประกันไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
+      "COUNTRIES_LOAD_ERROR": "โหลดรายชื่อปลายทางไม่สำเร็จ จึงแสดงแผนทั้งหมด",
+      "RETRY": "ลองใหม่"
+    },
+    "CARD": {
+      "RECOMMENDED": "แนะนำ",
+      "FROM": "เริ่มต้น",
+      "PER_TRAVELLER": "/ คน",
+      "TAX_NOTE": "รวมอากรแสตมป์และภาษีมูลค่าเพิ่มแล้ว",
+      "SINGLE_PRICE": "ราคาเดียว สำหรับทริป 1–{days} วัน",
+      "TIER_SUMMARY": "{count} ช่วงราคา · ทริปละไม่เกิน {days} วัน",
+      "COVERAGE_TITLE": "ความคุ้มครอง (วงเงินสูงสุด)",
+      "NOT_COVERED": "ไม่คุ้มครอง",
+      "COUNTRIES_TITLE": "ประเทศที่คุ้มครอง",
+      "COUNTRIES_COUNT": "{count} ประเทศ",
+      "COUNTRIES_MORE": "และอีก {count} ประเทศ",
+      "ADDONS_TITLE": "ซื้อความคุ้มครองเพิ่มได้",
+      "NO_ADDONS": "แผนนี้ไม่มีความคุ้มครองเพิ่มเติม",
+      "VIEW_DETAILS": "ดูรายละเอียด",
+      "CHOOSE_PLAN": "เลือกแผนนี้"
+    },
+    "DETAILS": {
+      "TIERS_TITLE": "ราคาต่อคนตามจำนวนวันเดินทาง",
+      "TIER_DAYS_HEADER": "จำนวนวัน",
+      "TIER_PRICE_HEADER": "ราคา / คน",
+      "TIER_RANGE": "{min}–{max} วัน",
+      "BAND_NOTE": "ราคาเหมาตามช่วงวัน ไม่ใช่ราคาต่อวัน",
+      "ADDONS_TITLE": "ความคุ้มครองเพิ่มเติม",
+      "ADDON_EXTRA_COVERAGE": "วงเงินเพิ่ม {amount}",
+      "COUNTRIES_TITLE": "ประเทศที่คุ้มครอง ({count})",
+      "CLOSE": "ปิด"
+    },
+    "COVERAGE": {
+      "MEDICAL_EXPENSES": "ค่ารักษาพยาบาล",
+      "ACCIDENTAL_DEATH_DISABILITY": "เสียชีวิต/ทุพพลภาพจากอุบัติเหตุ",
+      "EMERGENCY_EVACUATION": "เคลื่อนย้ายเพื่อการรักษาฉุกเฉิน",
+      "REPATRIATION": "ส่งศพหรืออัฐิกลับประเทศ",
+      "TRIP_CANCELLATION": "การยกเลิกการเดินทาง",
+      "TRIP_CURTAILMENT": "การลดระยะเวลาการเดินทาง",
+      "FLIGHT_DELAY": "เที่ยวบินล่าช้า",
+      "BAGGAGE_DELAY": "กระเป๋าล่าช้า",
+      "BAGGAGE_LOSS": "กระเป๋าสูญหาย/เสียหาย",
+      "PERSONAL_LIABILITY": "ความรับผิดต่อบุคคลภายนอก"
+    },
+    "ITEMS": {
+      "asia-basic": {
+        "NAME": "Asia Basic",
+        "DESCRIPTION": "ความคุ้มครองที่จำเป็นสำหรับเที่ยวเอเชีย ในราคาที่จับต้องได้"
+      },
+      "worldwide-plus": {
+        "NAME": "Worldwide Plus",
+        "DESCRIPTION": "คุ้มครองสูงสุดครบทุกหมวด เที่ยวได้ทุกประเทศทั่วโลก"
+      }
+    }
+  }
+}

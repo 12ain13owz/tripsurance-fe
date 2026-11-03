@@ -1,0 +1,65 @@
+{
+  "PLANS": {
+    "PAGE": {
+      "TITLE": "Choose the right travel insurance for your trip",
+      "SUBTITLE": "Price per traveller by trip length, stamp duty and VAT included",
+      "DESTINATION_LABEL": "Destination",
+      "ALL_DESTINATIONS": "All destinations",
+      "EMPTY_TITLE": "No plans cover {country} yet",
+      "EMPTY_HINT": "Try another destination, or see all plans",
+      "LOAD_ERROR": "Unable to load plans, please try again",
+      "COUNTRIES_LOAD_ERROR": "Unable to load destinations, showing all plans",
+      "RETRY": "Try again"
+    },
+    "CARD": {
+      "RECOMMENDED": "Recommended",
+      "FROM": "From",
+      "PER_TRAVELLER": "/ traveller",
+      "TAX_NOTE": "Incl. stamp duty & VAT",
+      "SINGLE_PRICE": "One price for trips of 1–{days} days",
+      "TIER_SUMMARY": "{count, plural, one {# price band} other {# price bands}} · trips up to {days} days",
+      "COVERAGE_TITLE": "Coverage (maximum sum insured)",
+      "NOT_COVERED": "Not covered",
+      "COUNTRIES_TITLE": "Countries covered",
+      "COUNTRIES_COUNT": "{count, plural, one {# country} other {# countries}}",
+      "COUNTRIES_MORE": "and {count} more",
+      "ADDONS_TITLE": "Optional add-ons",
+      "NO_ADDONS": "This plan has no add-ons",
+      "VIEW_DETAILS": "View details",
+      "CHOOSE_PLAN": "Choose this plan"
+    },
+    "DETAILS": {
+      "TIERS_TITLE": "Price per traveller by trip length",
+      "TIER_DAYS_HEADER": "Trip length",
+      "TIER_PRICE_HEADER": "Price / traveller",
+      "TIER_RANGE": "{min}–{max} days",
+      "BAND_NOTE": "A flat price per band, not per day",
+      "ADDONS_TITLE": "Optional add-ons",
+      "ADDON_EXTRA_COVERAGE": "Extra cover {amount}",
+      "COUNTRIES_TITLE": "Countries covered ({count})",
+      "CLOSE": "Close"
+    },
+    "COVERAGE": {
+      "MEDICAL_EXPENSES": "Medical expenses",
+      "ACCIDENTAL_DEATH_DISABILITY": "Accidental death & disability",
+      "EMERGENCY_EVACUATION": "Emergency medical evacuation",
+      "REPATRIATION": "Repatriation of remains",
+      "TRIP_CANCELLATION": "Trip cancellation",
+      "TRIP_CURTAILMENT": "Trip curtailment",
+      "FLIGHT_DELAY": "Flight delay",
+      "BAGGAGE_DELAY": "Baggage delay",
+      "BAGGAGE_LOSS": "Baggage loss or damage",
+      "PERSONAL_LIABILITY": "Personal liability"
+    },
+    "ITEMS": {
+      "asia-basic": {
+        "NAME": "Asia Basic",
+        "DESCRIPTION": "The essential cover for trips around Asia, at an easy price"
+      },
+      "worldwide-plus": {
+        "NAME": "Worldwide Plus",
+        "DESCRIPTION": "Our highest cover in every category, for any country in the world"
+      }
+    }
+  }
+}

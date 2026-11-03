@@ -1,0 +1,27 @@
+{
+  "ADDONS": {
+    "PRICING": {
+      "PER_ORDER": "/ policy",
+      "PER_TRAVELLER": "/ traveller",
+      "PER_TRAVELLER_PER_DAY": "/ traveller / day"
+    },
+    "ITEMS": {
+      "extreme-sports": {
+        "NAME": "Extreme sports",
+        "DESCRIPTION": "Covers injuries from activities such as skiing, diving and trekking"
+      },
+      "baggage-plus": {
+        "NAME": "Baggage Plus",
+        "DESCRIPTION": "Raises the cover for lost or damaged baggage"
+      },
+      "flight-delay-plus": {
+        "NAME": "Flight Delay Plus",
+        "DESCRIPTION": "Raises the cover for flight delays"
+      },
+      "rental-car-excess": {
+        "NAME": "Rental car excess",
+        "DESCRIPTION": "Pays the excess on a damaged rental car"
+      }
+    }
+  }
+}
