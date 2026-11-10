@@ -25,13 +25,11 @@ const regionByIsoCode = new Map<string, CountryRegion>(
     isoCodesByRegion[region].split(' ').map((isoCode) => [isoCode, region] as const)
   )
 )
-
-const regionNamesByLocale = new Map<string, Intl.DisplayNames>()
-
 export function getCountryRegion(isoCode: string): CountryRegion | null {
   return regionByIsoCode.get(isoCode) ?? null
 }
 
+const regionNamesByLocale = new Map<string, Intl.DisplayNames>()
 // One formatter per locale, built on first use and reused — a country list calls this per row
 function getRegionNames(locale: string): Intl.DisplayNames {
   let regionNames = regionNamesByLocale.get(locale)

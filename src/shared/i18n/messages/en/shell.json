@@ -1,0 +1,17 @@
+{
+  "SHELL": {
+    "NAV": {
+      "MAIN": "Main",
+      "HOME": "Home",
+      "PLANS": "Plans",
+      "VIEW_PLANS": "View plans",
+      "OPEN_MENU": "Open menu",
+      "CLOSE_MENU": "Close menu",
+      "LANGUAGE": "Language"
+    },
+    "FOOTER": {
+      "TAGLINE": "Travel insurance, made simple",
+      "COPYRIGHT": "© {year} Tripsurance. All rights reserved."
+    }
+  }
+}

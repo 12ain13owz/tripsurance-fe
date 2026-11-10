@@ -1,0 +1,17 @@
+{
+  "SHELL": {
+    "NAV": {
+      "MAIN": "เมนูหลัก",
+      "HOME": "หน้าแรก",
+      "PLANS": "แผนประกัน",
+      "VIEW_PLANS": "ดูแผนประกัน",
+      "OPEN_MENU": "เปิดเมนู",
+      "CLOSE_MENU": "ปิดเมนู",
+      "LANGUAGE": "ภาษา"
+    },
+    "FOOTER": {
+      "TAGLINE": "ประกันเดินทาง ซื้อง่าย คุ้มครองครบ",
+      "COPYRIGHT": "© {year} Tripsurance สงวนลิขสิทธิ์"
+    }
+  }
+}
