@@ -145,15 +145,17 @@ Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (p
 
 Reference: `plans-mock.html` (v3) in the workspace root.
 
+`/plans` is an **overview to compare plans, not a shop**: nothing is selected or bought there. Every card leads into the purchase funnel at `/order` (§4 Purchase stepper), which asks for the trip first and only then offers the plans that fit it, at the trip's real price.
+
 - **One tone for every plan:** `primary`. Plans are told apart by name, price and coverage — not by a per-plan color. The recommended plan differs only by the ring + badge above.
 - **Equal height, aligned sections:** the grid (`grid gap-6 md:grid-cols-2 lg:grid-cols-3`) gives each card `grid grid-rows-subgrid row-span-6`, so the same section starts at the same height on every card in a row, whatever its content.
 - **Six sections, in this order**, separated by `border-t border-base-300`:
   1. Header band — `bg-linear-to-br from-primary to-primary/80 text-primary-content`: icon chip, plan name (H3), one-line description.
-  2. Price — "from ฿X / person" (`text-2xl font-semibold tabular-nums text-primary`); just "฿X / person" when the plan has a single tier. Below it: the "incl. stamp duty & VAT" note (`text-sm text-muted`) and a pill with the tier count + max trip length.
+  2. Price — "from ฿X / person" (`text-2xl font-semibold tabular-nums text-primary`); just "฿X / person" when the plan has a single tier. Below it: the "incl. stamp duty & VAT" note (`text-sm text-muted`) and a pill with the tier count + max trip length. This is the **starting** price (cheapest tier) so plans can be compared at a glance; the price for a real trip only ever comes from the BE quote inside `/order`.
   3. Coverage — **all 10 categories** in `planCoverageCategories` order on every card, so rows line up across cards. A category the plan doesn't cover stays in the list as "Not covered" in `text-disabled`, never hidden.
   4. Countries — count + the first 3 names (sorted by localized name) + "and N more".
   5. Add-ons — `bg-primary/10 text-primary` pills, or a muted "no add-ons" line.
-  6. Actions — pinned to the bottom (`self-end`): `btn btn-outline` "View details" (opens the details modal: tier table, add-on prices, full country list) + the primary action.
+  6. Actions — pinned to the bottom (`self-end`), **one button only**: `btn btn-primary` "Check your premium" / "เช็กราคาเบี้ยประกัน", a link to `/order?plan=<code>` (the funnel pre-selects that plan if it fits the trip). Above it, a quiet `btn btn-text` link "Price table & all countries" opens the details modal (tier table, add-on prices, full country list). Never two equal-weight buttons, and no disabled "coming soon" button.
 - Copy comes from i18n keyed by `code`; a code without copy shows the code itself (`t.has`), never a raw message key.
 - Prices never animate (§4 Motion). The card surface is a `SpotlightCard`.
 
@@ -176,9 +178,18 @@ Reference: `plans-mock.html` (v3) in the workspace root.
 
 ### Purchase stepper
 
+The purchase funnel lives at `/order` (one name across route, `features/consumer/order/` and the BE `Order`). It starts from the trip, the way insurers' "check your premium" flows do (reference: MSIG Travel Easy):
+
+1. **Trip** — destination + departure/return dates.
+2. **Plan** — only the plans that cover that destination and trip length, each with the trip's real price from the BE quote; a `?plan=<code>` from `/plans` is pre-selected when it fits.
+3. **Travellers** — traveller details + add-ons.
+4. **Payment** — Stripe Checkout.
+
+The chosen plan is one field of the order the FE submits (`planCode`, trip, travellers, `addonCodes`); the FE never sends a price — the BE quotes and snapshots it. Funnel pages are `noindex`, have no marketing motion (§4 Motion) and one primary action per step. Every "check your premium" entry point (home hero, header, home CTA, plan cards) links here.
+
 Rebuild the old draft's 3-tier stepper (it hand-rolled separate mobile/tablet/desktop components) on top of FlyonUI's `steps` component:
 
-- `lg:` and up — `steps steps-horizontal` across the full flow (Personal info → Travel details → Coverage → Payment).
+- `lg:` and up — `steps steps-horizontal` across the full flow (Trip → Plan → Travellers → Payment).
 - `md` — condensed step pills (icon + short label only).
 - `<md` — a single "Step X of N" progress bar (`progress`/`progress-primary`) instead of rendering all steps.
 
