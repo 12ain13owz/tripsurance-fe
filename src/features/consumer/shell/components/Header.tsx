@@ -66,7 +66,7 @@ export function Header() {
               {tShell(`NAV.${item.labelKey}`)}
             </Link>
           ))}
-          <LocaleSwitcher />
+          <LocaleSwitcher isOnDark={isTransparent} />
           <Link href={consumerRoutes.order} className="btn btn-primary btn-sm">
             {tOrder('CHECK_PREMIUM')}
           </Link>
@@ -112,7 +112,10 @@ export function Header() {
                   {tShell(`NAV.${item.labelKey}`)}
                 </Link>
               ))}
-              <LocaleSwitcher />
+              <div className="flex items-center justify-between gap-4 px-3 py-2">
+                <span className="text-muted text-sm">{tShell('NAV.LANGUAGE')}</span>
+                <LocaleSwitcher />
+              </div>
               <Link
                 href={consumerRoutes.order}
                 className="btn btn-primary btn-lg"
