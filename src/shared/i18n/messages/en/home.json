@@ -1,0 +1,90 @@
+{
+  "HOME": {
+    "HERO": {
+      "TITLE": "Travel insurance that's clear from the first look",
+      "SUBTITLE": "Compare plans by destination, see the full price up front, and get covered before you fly.",
+      "CTA": "View plans"
+    },
+    "WHY": {
+      "TITLE": "Why Tripsurance",
+      "SUBTITLE": "Built to make choosing cover simple",
+      "ITEMS": {
+        "DESTINATION": {
+          "TITLE": "Plans by destination",
+          "DESCRIPTION": "Pick an Asia or a worldwide plan, and see exactly which countries each one covers."
+        },
+        "CLEAR_PRICE": {
+          "TITLE": "One clear price",
+          "DESCRIPTION": "Prices include stamp duty and VAT — what you see is what you pay."
+        },
+        "ONLINE": {
+          "TITLE": "Fully online",
+          "DESCRIPTION": "Compare and choose your plan in a few minutes, from any device."
+        },
+        "ADDONS": {
+          "TITLE": "Add what you need",
+          "DESCRIPTION": "Top up your plan with optional cover, such as extra baggage protection."
+        }
+      }
+    },
+    "COVERAGE": {
+      "TITLE": "What our plans cover",
+      "SUBTITLE": "Main protections — limits depend on the plan you choose",
+      "ITEMS": {
+        "MEDICAL_EXPENSES": "Hospital and treatment costs if you fall ill or get hurt abroad.",
+        "ACCIDENTAL_DEATH_DISABILITY": "A lump sum for death or permanent disability from an accident.",
+        "EMERGENCY_EVACUATION": "Transport to the nearest suitable hospital in a medical emergency.",
+        "TRIP_CANCELLATION": "Non-refundable costs if you must cancel for a covered reason.",
+        "FLIGHT_DELAY": "Compensation when your flight is delayed beyond the plan's threshold.",
+        "BAGGAGE_LOSS": "Your belongings, if your baggage is lost or damaged in transit."
+      }
+    },
+    "STEPS": {
+      "TITLE": "How it works",
+      "ITEMS": {
+        "CHOOSE": {
+          "TITLE": "Choose a plan",
+          "DESCRIPTION": "Compare plans by destination, cover and price."
+        },
+        "DETAILS": {
+          "TITLE": "Enter your trip",
+          "DESCRIPTION": "Add your dates, travellers and any optional cover."
+        },
+        "POLICY": {
+          "TITLE": "Get your policy",
+          "DESCRIPTION": "Pay online and receive your policy by email."
+        }
+      }
+    },
+    "FAQ": {
+      "TITLE": "Frequently asked questions",
+      "ITEMS": {
+        "PRICE": {
+          "QUESTION": "Does the price include tax?",
+          "ANSWER": "Yes. Every price already includes stamp duty and VAT, so there's nothing added at checkout."
+        },
+        "PLANS": {
+          "QUESTION": "What's the difference between the plans?",
+          "ANSWER": "Plans differ in where they cover you (for example Asia or worldwide) and how much each protection pays. Compare them side by side on the plans page."
+        },
+        "TRAVELLERS": {
+          "QUESTION": "Can I buy for my family or friends?",
+          "ANSWER": "Yes. One purchase can cover up to 6 travellers on the same trip."
+        },
+        "MAX_DAYS": {
+          "QUESTION": "How long can my trip be?",
+          "ANSWER": "Each plan has its own maximum trip length, shown on the plan card."
+        },
+        "ADDONS": {
+          "QUESTION": "Can I add extra cover?",
+          "ANSWER": "Many plans offer optional add-ons, such as extra baggage or flight-delay cover. You'll find them on each plan's details."
+        }
+      }
+    },
+    "CTA": {
+      "TITLE": "Ready for your next trip?",
+      "SUBTITLE": "Find the plan that fits where you're going.",
+      "BUTTON": "Compare plans"
+    }
+  }
+}

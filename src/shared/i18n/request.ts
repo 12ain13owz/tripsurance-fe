@@ -17,6 +17,7 @@ export default getRequestConfig(async () => {
       Promise.all([
         import('./messages/en/common.json'),
         import('./messages/en/shell.json'),
+        import('./messages/en/home.json'),
         import('./messages/en/plans.json'),
         import('./messages/en/addons.json'),
       ]),
@@ -24,11 +25,12 @@ export default getRequestConfig(async () => {
       Promise.all([
         import('./messages/th/common.json'),
         import('./messages/th/shell.json'),
+        import('./messages/th/home.json'),
         import('./messages/th/plans.json'),
         import('./messages/th/addons.json'),
       ]),
   }
-  const [common, shell, plans, addons] = await messageLoaders[locale]()
+  const [common, shell, home, plans, addons] = await messageLoaders[locale]()
 
   // e.g. useTranslations('PLANS')
   return {
@@ -36,6 +38,7 @@ export default getRequestConfig(async () => {
     messages: {
       ...common.default,
       ...shell.default,
+      ...home.default,
       ...plans.default,
       ...addons.default,
     },
