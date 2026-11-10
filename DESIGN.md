@@ -244,10 +244,12 @@ reach for those before writing a one-off `motion.*` element.
 
 ## 5. Layout principles
 
-- **Consumer container:** `max-w-6xl mx-auto px-4 md:px-6` for marketing and purchase pages. Page content clears the fixed navbar with `pt-20 md:pt-24`.
+- **Consumer container:** `max-w-6xl mx-auto px-4 md:px-6` is the **content** column — text, cards, forms. Page content clears the fixed navbar with `pt-20 md:pt-24`.
+- **Backgrounds vs content (marketing pages):** on home and `/plans`, a section's background (color, gradient, image) may run **full-bleed** edge to edge — a band that stops short of the screen edge looks unfinished there. Only the content inside stays in the `max-w-6xl` column (or narrower for centered copy, e.g. `max-w-3xl`). Put the background on the `<section>` itself and animate only the content inside it (`FadeIn` on the inner column), so the band never slides or leaves a gap while it fades in.
+- **Funnel & admin:** `/order` and other form pages keep everything inside the container (forms narrower still, e.g. `max-w-2xl`) — no full-bleed decoration on transactional screens.
 - **Admin shell:** full-bleed (no `max-w` cap) so data tables get the space they need; content padding `p-6`.
 - **Section spacing (consumer):** marketing pages are a stack of full-width `<section>` bands, each with its own `py-16 md:py-24` and alternating `bg-base-200` / plain background; inside a band, the `max-w-6xl` column spaces its blocks with `flex flex-col gap-8 md:gap-12`. Home order: hero → why → coverage → steps → FAQ → CTA. No testimonials, stats or other claims that aren't real data.
-- **Hero bleed:** hero background/image may go full-width; hero copy still sits inside the `max-w-6xl` inner column.
+- **Hero and CTA bands:** the home hero (photo) and the closing CTA band (`bg-primary`, optionally a `from-primary to-secondary` gradient) are full-bleed; their copy still sits inside the inner column.
 - Mobile-first; breakpoints follow Tailwind defaults (`md` 768px, `lg` 1024px, `xl` 1280px) — FlyonUI ships the same scale, don't override it.
 
 ### Layout primitives: flex/grid + gap only
