@@ -1,0 +1,17 @@
+{
+  "ORDER": {
+    "STEPS": {
+      "LABEL": "Purchase steps",
+      "TRIP": "Trip details",
+      "PLAN": "Choose a plan",
+      "TRAVELLERS": "Travellers",
+      "PAYMENT": "Payment"
+    },
+    "PLACEHOLDER": {
+      "TITLE": "Check your travel insurance premium",
+      "BODY": "Buying online is coming soon. Meanwhile, you can compare what each plan covers.",
+      "INTERESTED_PLAN": "Plan you're interested in: <b>{plan}</b>",
+      "VIEW_PLANS": "See all plans"
+    }
+  }
+}

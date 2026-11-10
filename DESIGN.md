@@ -107,6 +107,8 @@ Use **FlyonUI's native classes directly** (`btn`, `input`, `select`, `card`, `st
 | Quiet / icon     | `btn btn-text btn-square` | Shell chrome (menu, account), pagination, qty stepper                                 |
 | Destructive      | `btn btn-error`           | Cancel policy, delete admin record — always behind a confirm step, never a bare click |
 
+Secondary action on a dark photo/`neutral` background (home hero): `btn btn-outline border-neutral-content/70 text-neutral-content hover:border-neutral-content hover:bg-neutral-content/10` — plain `btn-outline` would be dark-on-dark.
+
 Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (primary purchase CTAs, mobile tap targets).
 
 **Icon-only buttons** put a lucide icon (`size-4` in `btn-sm`) inside a FlyonUI button; the icon takes the button's color through `currentColor`, so never color the icon itself. Always give an `aria-label` that names the action and the row (`Edit baggage-plus`). FlyonUI has no `btn-ghost` — the quiet variant is `btn-text`.
@@ -187,9 +189,9 @@ The purchase funnel lives at `/order` (one name across route, `features/consumer
 
 The chosen plan is one field of the order the FE submits (`planCode`, trip, travellers, `addonCodes`); the FE never sends a price — the BE quotes and snapshots it. Funnel pages are `noindex`, have no marketing motion (§4 Motion) and one primary action per step. Every "check your premium" entry point (home hero, header, home CTA, plan cards) links here.
 
-Rebuild the old draft's 3-tier stepper (it hand-rolled separate mobile/tablet/desktop components) on top of FlyonUI's `steps` component:
+Rebuild the old draft's 3-tier stepper (it hand-rolled separate mobile/tablet/desktop components) as one `OrderSteps` component — the installed FlyonUI ships no `steps` CSS class, so it is an `<ol>` built with Tailwind utilities + tokens (active step `bg-primary text-primary-content`, others `border-base-300 text-muted`):
 
-- `lg:` and up — `steps steps-horizontal` across the full flow (Trip → Plan → Travellers → Payment).
+- `lg:` and up — all steps in one horizontal row across the full flow (Trip → Plan → Travellers → Payment).
 - `md` — condensed step pills (icon + short label only).
 - `<md` — a single "Step X of N" progress bar (`progress`/`progress-primary`) instead of rendering all steps.
 
