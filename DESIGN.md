@@ -32,7 +32,7 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 | `primary-content`   | `#FFFFFF`             | `text-primary-content`                      | Text/icons on solid `bg-primary`                                                        |
 | `secondary`         | `#0891B2` (cyan-600)  | `btn-secondary`, `text-secondary`           | Secondary CTAs, supporting accents (sky/sea = travel)                                   |
 | `secondary-content` | `#FFFFFF`             | `text-secondary-content`                    | Text on solid `bg-secondary`                                                            |
-| `accent`            | `#F59E0B` (amber-500) | `bg-accent`, `text-accent`                  | Sparingly: "Popular" badge, promo ribbon, highlight chip — never a default button color |
+| `accent`            | `#F59E0B` (amber-500) | `bg-accent`, `text-accent`                  | Sparingly: "Recommended" badge, promo ribbon, highlight chip — never a button color     |
 | `accent-content`    | `#0F172A`             | `text-accent-content`                       | Text on solid `bg-accent`                                                               |
 | `neutral`           | `#334155` (slate-700) | `bg-neutral`, `text-neutral`                | Dark chrome: footer, admin sidebar accents                                              |
 | `neutral-content`   | `#F8FAFC`             | `text-neutral-content`                      | Text on solid `bg-neutral`                                                              |
@@ -68,7 +68,7 @@ All colors are defined once, as FlyonUI theme CSS variables, in [`src/app/global
 
 ## 3. Typography rules
 
-- **Font:** IBM Plex Sans Thai (`font-sans`, loaded via `next/font/google` in `src/app/layout.tsx`, weights 100–700). One family covers Thai + Latin — do not add a second display font.
+- **Font:** IBM Plex Sans Thai (`font-sans`, loaded via `next/font/google` in `src/core/layout/BaseLayout.tsx`, which both root layouts render; weights 100–700). One family covers Thai + Latin — do not add a second display font.
 - **Numbers/prices:** `tabular-nums` for premiums, coverage amounts, and dates so digits align in tables and pricing cards.
 
 | Role                   | Classes                                        |
@@ -138,8 +138,41 @@ Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (p
 ></div>
 ```
 
-- "Popular"/recommended plan: `ring-2 ring-primary/40` + a badge (`bg-accent text-accent-content`) — replaces the old draft's hardcoded `ring-blue-400/50`.
+- Recommended plan (`isFeatured`): `ring-2 ring-primary/40` + a badge (`bg-accent text-accent-content`) labelled "Recommended" / "แนะนำ" — never "Popular" / "ยอดนิยม": it is an admin's merchandising choice, not sales data (BE `plan.md` rule 22). Replaces the old draft's hardcoded `ring-blue-400/50`.
 - Policy/claim status badges: `badge badge-success` / `badge-warning` / `badge-error` / `badge-info` — never a custom colored `<span>`.
+
+#### Plan cards (consumer plan listing)
+
+Reference: `plans-mock.html` (v3) in the workspace root.
+
+- **One tone for every plan:** `primary`. Plans are told apart by name, price and coverage — not by a per-plan color. The recommended plan differs only by the ring + badge above.
+- **Equal height, aligned sections:** the grid (`grid gap-6 md:grid-cols-2 lg:grid-cols-3`) gives each card `grid grid-rows-subgrid row-span-6`, so the same section starts at the same height on every card in a row, whatever its content.
+- **Six sections, in this order**, separated by `border-t border-base-300`:
+  1. Header band — `bg-linear-to-br from-primary to-primary/80 text-primary-content`: icon chip, plan name (H3), one-line description.
+  2. Price — "from ฿X / person" (`text-2xl font-semibold tabular-nums text-primary`); just "฿X / person" when the plan has a single tier. Below it: the "incl. stamp duty & VAT" note (`text-sm text-muted`) and a pill with the tier count + max trip length.
+  3. Coverage — **all 10 categories** in `planCoverageCategories` order on every card, so rows line up across cards. A category the plan doesn't cover stays in the list as "Not covered" in `text-disabled`, never hidden.
+  4. Countries — count + the first 3 names (sorted by localized name) + "and N more".
+  5. Add-ons — `bg-primary/10 text-primary` pills, or a muted "no add-ons" line.
+  6. Actions — pinned to the bottom (`self-end`): `btn btn-outline` "View details" (opens the details modal: tier table, add-on prices, full country list) + the primary action.
+- Copy comes from i18n keyed by `code`; a code without copy shows the code itself (`t.has`), never a raw message key.
+- Prices never animate (§4 Motion). The card surface is a `SpotlightCard`.
+
+### Loading states
+
+| What is loading                     | Show                                                                                     |
+| ----------------------------------- | ---------------------------------------------------------------------------------------- |
+| A page's / section's content        | `Skeleton` (`@/shared/components/ui`) shaped like the real layout (same grid, same rows) |
+| An action the user started (submit) | `loading loading-spinner loading-sm` inside the button, button disabled                  |
+| The admin session check on boot     | `SplashScreen`                                                                           |
+
+- A feature-shaped skeleton (e.g. a plan card) lives in that feature and is built from the shared `Skeleton` primitive; don't put feature-shaped skeletons in `shared/`.
+- Keep the page chrome (header, page heading) real and only skeleton the part that waits for data, so the layout doesn't jump when it arrives.
+- Never skeleton a price with a fake number — use a plain bar.
+
+### Disclosure (FAQ, "more info")
+
+- Use native `<details>` / `<summary>` — keyboard and screen-reader support for free, works without JS, and the content stays in the server HTML for SEO.
+- Style with Tailwind utilities only: `group` on `<details>`, hide the default marker on `<summary>` (`list-none [&::-webkit-details-marker]:hidden`), rotate the chevron with `group-open:rotate-180` — no JS state. Reference: home `FaqSection`.
 
 ### Purchase stepper
 
@@ -165,12 +198,14 @@ Every admin list — countries, add-ons, plans, … — renders through one shar
 
 ### Consumer navigation
 
-Sticky header transitions from transparent-over-hero to a solid bar on scroll (reuse the old draft's scroll-listener pattern), but with tokens instead of literals:
+The header is `fixed` (`h-16`, over the page). It is transparent only on the **home page, at the top, with the mobile menu closed** — sitting over the dark hero photo; everywhere else it is a solid bar. framer-motion's `useScroll` drives the switch, with tokens instead of literals:
 
 ```
-bg-base-100/90 backdrop-blur-sm shadow-sm   /* scrolled or menu open */
-bg-transparent                              /* top of hero */
+bg-base-100/90 text-base-content backdrop-blur-sm shadow-sm   /* default: other pages, scrolled, or menu open */
+bg-transparent text-neutral-content                           /* home, top of hero */
 ```
+
+Because the header is fixed, every page except home clears it with `pt-20 md:pt-24` (§5); the home hero runs full-bleed underneath it instead.
 
 ### Motion
 
@@ -198,7 +233,7 @@ reach for those before writing a one-off `motion.*` element.
 
 - **Consumer container:** `max-w-6xl mx-auto px-4 md:px-6` for marketing and purchase pages. Page content clears the fixed navbar with `pt-20 md:pt-24`.
 - **Admin shell:** full-bleed (no `max-w` cap) so data tables get the space they need; content padding `p-6`.
-- **Section spacing (consumer):** `flex flex-col gap-8 md:gap-12` between marketing blocks (hero → coverage → plans → testimonials → FAQ → CTA), matching the section order already proven in `travel-insurance/frontend`.
+- **Section spacing (consumer):** marketing pages are a stack of full-width `<section>` bands, each with its own `py-16 md:py-24` and alternating `bg-base-200` / plain background; inside a band, the `max-w-6xl` column spaces its blocks with `flex flex-col gap-8 md:gap-12`. Home order: hero → why → coverage → steps → FAQ → CTA. No testimonials, stats or other claims that aren't real data.
 - **Hero bleed:** hero background/image may go full-width; hero copy still sits inside the `max-w-6xl` inner column.
 - Mobile-first; breakpoints follow Tailwind defaults (`md` 768px, `lg` 1024px, `xl` 1280px) — FlyonUI ships the same scale, don't override it.
 
@@ -262,7 +297,7 @@ Don't reach for ad hoc `rounded-full` / `rounded-xl` overrides outside this scal
 ## 8. Responsive behavior
 
 - Breakpoints: `sm` 640 / `md` 768 / `lg` 1024 / `xl` 1280 (Tailwind/FlyonUI defaults — don't override).
-- **Consumer nav:** inline desktop nav → slide-down mobile menu (`menu-button` → `mobile-nav` pattern from the old draft; port the structure, replace literal colors with tokens).
+- **Consumer nav:** inline nav from `md` up → below `md`, a menu button (`btn btn-text btn-square`) toggles a slide-down menu (framer-motion height animation); opening it turns the header solid (§4 Consumer navigation).
 - **Purchase stepper:** see §4 — horizontal steps ≥`lg`, condensed pills on `md`, single progress bar `<md`.
 - **Admin sidebar:** collapses to icon-only or an off-canvas drawer `<lg`.
 - **Admin data lists:** table from `md` up, one card per row below `md` — see §4 Admin data lists.
