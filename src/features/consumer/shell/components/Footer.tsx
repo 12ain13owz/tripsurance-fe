@@ -5,7 +5,8 @@ import { consumerRoutes } from '@/shared/routes'
 import { consumerNavItems } from '../lib/nav-items'
 
 export function Footer() {
-  const t = useTranslations('SHELL')
+  const tComman = useTranslations('COMMON')
+  const tShell = useTranslations('SHELL')
 
   return (
     <footer className="bg-neutral text-neutral-content">
@@ -14,24 +15,24 @@ export function Footer() {
           <div className="flex flex-col gap-2">
             <Link href={consumerRoutes.home} className="flex items-center gap-2 text-lg font-bold">
               <ShieldCheck className="size-6" />
-              {t('APP_NAME')}
+              {tComman('APP_NAME')}
             </Link>
-            <p className="text-neutral-content/70 text-sm">{t('FOOTER.TAGLINE')}</p>
+            <p className="text-neutral-content/70 text-sm">{tShell('FOOTER.TAGLINE')}</p>
           </div>
-          <nav aria-label={t('NAV.MAIN')} className="flex gap-6">
+          <nav aria-label={tShell('NAV.MAIN')} className="flex gap-6">
             {consumerNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className="text-neutral-content/80 hover:text-neutral-content transition-colors"
               >
-                {t(`NAV.${item.labelKey}`)}
+                {tShell(`NAV.${item.labelKey}`)}
               </Link>
             ))}
           </nav>
         </div>
         <p className="border-neutral-content/15 text-neutral-content/70 border-t pt-6 text-sm">
-          {t('FOOTER.COPYRIGHT', { year: new Date().getFullYear() })}
+          {tShell('FOOTER.COPYRIGHT', { year: new Date().getFullYear() })}
         </p>
       </div>
     </footer>

@@ -8,7 +8,7 @@ async function loadFlyonUI() {
   return import('flyonui/flyonui')
 }
 
-export default function FlyonuiScript() {
+export function FlyonuiScript() {
   const path = usePathname()
 
   useEffect(() => {

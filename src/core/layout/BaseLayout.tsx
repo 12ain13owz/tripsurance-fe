@@ -1,5 +1,5 @@
 import { IBM_Plex_Sans_Thai } from 'next/font/google'
-import FlyonuiScript from '@/core/flyonui/FlyonuiScript'
+import { FlyonuiScript } from '@/core/flyonui'
 import type { ReactNode } from 'react'
 
 const ibmPlexSansThai = IBM_Plex_Sans_Thai({

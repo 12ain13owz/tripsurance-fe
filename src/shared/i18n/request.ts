@@ -30,7 +30,6 @@ export default getRequestConfig(async () => {
   }
   const [common, shell, plans, addons] = await messageLoaders[locale]()
 
-  // Each file has one top-level key (COMMON, PLANS, ADDONS) — that key is the namespace,
   // e.g. useTranslations('PLANS')
   return {
     locale,
