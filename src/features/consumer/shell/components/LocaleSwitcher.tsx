@@ -41,7 +41,7 @@ export function LocaleSwitcher({ isOnDark = false }: LocaleSwitcherProps) {
       role="group"
       aria-label={t('LANGUAGE')}
       className={cn(
-        'relative inline-grid rounded-full border p-[3px]',
+        'relative inline-grid rounded-full border p-0.75',
         isOnDark ? 'border-white/20 bg-white/10' : 'border-base-300 bg-base-content/5'
       )}
       style={{ gridTemplateColumns: `repeat(${routing.locales.length}, 1fr)` }}
@@ -49,7 +49,7 @@ export function LocaleSwitcher({ isOnDark = false }: LocaleSwitcherProps) {
       <span
         aria-hidden="true"
         className={cn(
-          'absolute inset-y-[3px] left-[3px] rounded-full transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none',
+          'absolute inset-y-0.75 left-0.75 rounded-full transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none',
           isOnDark ? 'bg-base-100' : 'bg-primary shadow-[0_2px_6px_-2px_rgb(37_99_235/0.6)]'
         )}
         style={{
