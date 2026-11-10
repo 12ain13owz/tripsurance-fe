@@ -6,7 +6,8 @@ import { Link } from '@/shared/i18n'
 import { consumerRoutes } from '@/shared/routes'
 
 export function HeroSection() {
-  const t = useTranslations('HOME.HERO')
+  const tHome = useTranslations('HOME.HERO')
+  const tOrder = useTranslations('ORDER')
   const locale = useLocale()
 
   return (
@@ -25,18 +26,26 @@ export function HeroSection() {
 
       <div className="text-neutral-content mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pt-24 pb-16 md:px-6">
         <TextReveal
-          text={t('TITLE')}
+          text={tHome('TITLE')}
           locale={locale}
           className="max-w-3xl text-4xl leading-tight font-bold md:text-6xl"
         />
         <FadeIn delay={0.4} className="flex max-w-2xl flex-col gap-8">
           <p className="text-neutral-content/90 text-lg leading-relaxed md:text-xl">
-            {t('SUBTITLE')}
+            {tHome('SUBTITLE')}
           </p>
-          <Link href={consumerRoutes.plans} className="btn btn-primary btn-lg self-start">
-            {t('CTA')}
-            <ArrowRight className="size-5" />
-          </Link>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href={consumerRoutes.order} className="btn btn-primary btn-lg">
+              {tOrder('CHECK_PREMIUM')}
+              <ArrowRight className="size-5" />
+            </Link>
+            <Link
+              href={consumerRoutes.plans}
+              className="btn btn-outline btn-lg border-neutral-content/70 text-neutral-content hover:border-neutral-content hover:bg-neutral-content/10"
+            >
+              {tHome('COMPARE_PLANS')}
+            </Link>
+          </div>
         </FadeIn>
       </div>
     </section>

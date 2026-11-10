@@ -3,7 +3,7 @@
     "HERO": {
       "TITLE": "Travel insurance that's clear from the first look",
       "SUBTITLE": "Compare plans by destination, see the full price up front, and get covered before you fly.",
-      "CTA": "View plans"
+      "COMPARE_PLANS": "Compare plans"
     },
     "WHY": {
       "TITLE": "Why Tripsurance",
@@ -83,8 +83,7 @@
     },
     "CTA": {
       "TITLE": "Ready for your next trip?",
-      "SUBTITLE": "Find the plan that fits where you're going.",
-      "BUTTON": "Compare plans"
+      "SUBTITLE": "Enter your destination and travel dates to see your trip's premium."
     }
   }
 }

@@ -1,6 +1,8 @@
-import { CalendarDays, Globe, Info, Plane, Star } from 'lucide-react'
+import { ArrowRight, CalendarDays, Globe, Plane, Star } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { EASE_OUT, SpotlightCard } from '@/shared/components/motions'
+import { Link } from '@/shared/i18n'
+import { consumerRoutes } from '@/shared/routes'
 import { cn, formatBaht } from '@/shared/utils'
 import { PlanCoverageList } from './PlanCoverageList'
 import {
@@ -24,12 +26,12 @@ interface PlanCardProps {
 
 // Six subgrid rows (DESIGN.md §4 Plan cards): each section starts at the same height on every card
 export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
-  const t = useTranslations('PLANS')
+  const tPlans = useTranslations('PLANS')
   const tAddons = useTranslations('ADDONS')
-  const tCommon = useTranslations('COMMON')
+  const tOrder = useTranslations('ORDER')
   const locale = useLocale()
 
-  const description = getItemDescription(t, plan.code)
+  const description = getItemDescription(tPlans, plan.code)
   const isSinglePrice = plan.tiers.length === 1
   const maxDays = getMaxTripDays(plan.tiers)
   const countries = getSortedCountries(plan.countries, locale)
@@ -49,7 +51,7 @@ export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
       {plan.isFeatured && (
         <span className="badge bg-accent text-accent-content absolute -top-3 left-1/2 z-20 -translate-x-1/2 gap-1 border-0 font-semibold whitespace-nowrap shadow-sm">
           <Star className="size-3.5 fill-current" aria-hidden />
-          {t('CARD.RECOMMENDED')}
+          {tPlans('CARD.RECOMMENDED')}
         </span>
       )}
 
@@ -64,7 +66,7 @@ export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
           <PlanIcon className="size-5" aria-hidden />
         </span>
         <div className="flex flex-col gap-0.5">
-          <h3 className="text-xl font-semibold">{getItemName(t, plan.code)}</h3>
+          <h3 className="text-xl font-semibold">{getItemName(tPlans, plan.code)}</h3>
           {description && (
             <p className="text-primary-content/85 text-sm leading-relaxed">{description}</p>
           )}
@@ -73,31 +75,31 @@ export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
 
       <CardSection>
         <p className="flex flex-wrap items-baseline gap-2">
-          {!isSinglePrice && <span className="text-subtle">{t('CARD.FROM')}</span>}
+          {!isSinglePrice && <span className="text-subtle">{tPlans('CARD.FROM')}</span>}
           <span className="text-primary text-2xl font-semibold tabular-nums">
             {formatBaht(getStartingPrice(plan.tiers), locale)}
           </span>
-          <span className="text-subtle">{t('CARD.PER_TRAVELLER')}</span>
+          <span className="text-subtle">{tPlans('CARD.PER_TRAVELLER')}</span>
         </p>
-        <p className="text-muted text-sm">{t('CARD.TAX_NOTE')}</p>
+        <p className="text-muted text-sm">{tPlans('CARD.TAX_NOTE')}</p>
         <span className="badge badge-soft badge-primary gap-1.5 self-start">
           <CalendarDays className="size-3.5" aria-hidden />
           {isSinglePrice
-            ? t('CARD.SINGLE_PRICE', { days: maxDays })
-            : t('CARD.TIER_SUMMARY', { count: plan.tiers.length, days: maxDays })}
+            ? tPlans('CARD.SINGLE_PRICE', { days: maxDays })
+            : tPlans('CARD.TIER_SUMMARY', { count: plan.tiers.length, days: maxDays })}
         </span>
       </CardSection>
 
-      <CardSection title={t('CARD.COVERAGE_TITLE')}>
+      <CardSection title={tPlans('CARD.COVERAGE_TITLE')}>
         <PlanCoverageList coverages={plan.coverages} locale={locale} />
       </CardSection>
 
-      <CardSection title={t('CARD.COUNTRIES_TITLE')}>
+      <CardSection title={tPlans('CARD.COUNTRIES_TITLE')}>
         <p className="flex gap-2 text-sm">
           <Globe className="text-primary mt-1 size-4 shrink-0" aria-hidden />
           <span>
             <span className="font-semibold">
-              {t('CARD.COUNTRIES_COUNT', { count: countries.length })}
+              {tPlans('CARD.COUNTRIES_COUNT', { count: countries.length })}
             </span>
             <span className="text-muted">
               {' · '}
@@ -105,13 +107,13 @@ export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
                 .slice(0, VISIBLE_COUNTRIES)
                 .map((country) => country.name)
                 .join(', ')}
-              {moreCountries > 0 && ` ${t('CARD.COUNTRIES_MORE', { count: moreCountries })}`}
+              {moreCountries > 0 && ` ${tPlans('CARD.COUNTRIES_MORE', { count: moreCountries })}`}
             </span>
           </span>
         </p>
       </CardSection>
 
-      <CardSection title={t('CARD.ADDONS_TITLE')}>
+      <CardSection title={tPlans('CARD.ADDONS_TITLE')}>
         {plan.addons.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {plan.addons.map((addon) => (
@@ -121,19 +123,25 @@ export function PlanCard({ plan, index, onViewDetails }: PlanCardProps) {
             ))}
           </div>
         ) : (
-          <p className="text-muted text-sm">{t('CARD.NO_ADDONS')}</p>
+          <p className="text-muted text-sm">{tPlans('CARD.NO_ADDONS')}</p>
         )}
       </CardSection>
 
-      <CardSection className="self-end">
-        <button type="button" className="btn btn-outline btn-primary" onClick={onViewDetails}>
-          <Info className="size-4" aria-hidden />
-          {t('CARD.VIEW_DETAILS')}
+      <CardSection className="gap-1 self-end">
+        <button
+          type="button"
+          className="btn btn-text btn-primary btn-sm self-center"
+          onClick={onViewDetails}
+        >
+          {tPlans('CARD.VIEW_DETAILS')}
         </button>
-        {/* Buying lands with Order (#6) */}
-        <button type="button" className="btn" disabled>
-          {t('CARD.CHOOSE_PLAN')} · {tCommon('COMING_SOON')}
-        </button>
+        <Link
+          href={{ pathname: consumerRoutes.order, query: { plan: plan.code } }}
+          className="btn btn-primary"
+        >
+          {tOrder('CHECK_PREMIUM')}
+          <ArrowRight className="size-4" aria-hidden />
+        </Link>
       </CardSection>
     </SpotlightCard>
   )

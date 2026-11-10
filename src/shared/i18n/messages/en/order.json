@@ -1,17 +1,18 @@
 {
   "ORDER": {
+    "CHECK_PREMIUM": "Check your premium",
     "STEPS": {
-      "LABEL": "ขั้นตอนการซื้อ",
-      "TRIP": "ข้อมูลการเดินทาง",
-      "PLAN": "เลือกแผน",
-      "TRAVELLERS": "ผู้เดินทาง",
-      "PAYMENT": "ชำระเงิน"
+      "LABEL": "Purchase steps",
+      "TRIP": "Trip details",
+      "PLAN": "Choose a plan",
+      "TRAVELLERS": "Travellers",
+      "PAYMENT": "Payment"
     },
     "PLACEHOLDER": {
-      "TITLE": "เช็กราคาเบี้ยประกันเดินทาง",
-      "BODY": "การซื้อประกันออนไลน์กำลังจะเปิดให้บริการ ระหว่างนี้คุณดูรายละเอียดความคุ้มครองของแต่ละแผนได้ก่อน",
-      "INTERESTED_PLAN": "แผนที่คุณสนใจ: <b>{plan}</b>",
-      "VIEW_PLANS": "ดูแผนประกันทั้งหมด"
+      "TITLE": "Check your travel insurance premium",
+      "BODY": "Buying online is coming soon. Meanwhile, you can compare what each plan covers.",
+      "INTERESTED_PLAN": "Plan you're interested in: <b>{plan}</b>",
+      "VIEW_PLANS": "See all plans"
     }
   }
 }

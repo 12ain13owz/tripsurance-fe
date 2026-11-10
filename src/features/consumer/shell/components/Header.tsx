@@ -16,6 +16,7 @@ const SCROLL_THRESHOLD_PX = 50
 export function Header() {
   const tCommon = useTranslations('COMMON')
   const tShell = useTranslations('SHELL')
+  const tOrder = useTranslations('ORDER')
   const pathname = usePathname()
   const { scrollY } = useScroll()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -66,8 +67,8 @@ export function Header() {
             </Link>
           ))}
           <LocaleSwitcher />
-          <Link href={consumerRoutes.plans} className="btn btn-primary btn-sm">
-            {tShell('NAV.VIEW_PLANS')}
+          <Link href={consumerRoutes.order} className="btn btn-primary btn-sm">
+            {tOrder('CHECK_PREMIUM')}
           </Link>
         </nav>
 
@@ -113,11 +114,11 @@ export function Header() {
               ))}
               <LocaleSwitcher />
               <Link
-                href={consumerRoutes.plans}
+                href={consumerRoutes.order}
                 className="btn btn-primary btn-lg"
                 onClick={closeMenu}
               >
-                {tShell('NAV.VIEW_PLANS')}
+                {tOrder('CHECK_PREMIUM')}
               </Link>
             </div>
           </motion.nav>

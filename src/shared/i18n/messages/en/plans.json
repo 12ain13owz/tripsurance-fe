@@ -26,8 +26,7 @@
       "COUNTRIES_MORE": "and {count} more",
       "ADDONS_TITLE": "Optional add-ons",
       "NO_ADDONS": "This plan has no add-ons",
-      "VIEW_DETAILS": "View details",
-      "CHOOSE_PLAN": "Choose this plan"
+      "VIEW_DETAILS": "Price table & all countries"
     },
     "DETAILS": {
       "TIERS_TITLE": "Price per traveller by trip length",
