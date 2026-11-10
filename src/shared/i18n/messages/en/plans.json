@@ -9,7 +9,8 @@
       "EMPTY_HINT": "Try another destination, or see all plans",
       "LOAD_ERROR": "Unable to load plans, please try again",
       "COUNTRIES_LOAD_ERROR": "Unable to load destinations, showing all plans",
-      "RETRY": "Try again"
+      "RETRY": "Try again",
+      "NO_PLANS": "No plans are available right now"
     },
     "CARD": {
       "RECOMMENDED": "Recommended",

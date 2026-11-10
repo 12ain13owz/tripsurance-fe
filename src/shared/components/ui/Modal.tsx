@@ -20,11 +20,20 @@ interface ModalProps {
   /** Actions row; a submit button here links to its form with the `form` attribute */
   footer?: ReactNode
   size?: keyof typeof dialogSizeClass
+  closeLabel?: string
 }
 
 // Native <dialog> + FlyonUI modal classes, driven by React state instead of HSOverlay JS:
 // showModal() gives the backdrop, Esc and focus trap; children mount fresh on every open
-export function Modal({ open, title, onClose, children, footer, size = 'md' }: ModalProps) {
+export function Modal({
+  open,
+  title,
+  onClose,
+  children,
+  footer,
+  size = 'md',
+  closeLabel = 'Close',
+}: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
 
@@ -63,7 +72,7 @@ export function Modal({ open, title, onClose, children, footer, size = 'md' }: M
             <button
               type="button"
               className="btn btn-primary btn-square btn-sm"
-              aria-label="Close"
+              aria-label={closeLabel}
               onClick={onClose}
             >
               <X className="size-4" />

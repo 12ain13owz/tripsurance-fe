@@ -2,6 +2,7 @@
   "COMMON": {
     "APP_NAME": "Tripsurance",
     "COMING_SOON": "Coming soon",
-    "BACK_TO_HOME": "Back to home"
+    "BACK_TO_HOME": "Back to home",
+    "LOADING": "Loading…"
   }
 }

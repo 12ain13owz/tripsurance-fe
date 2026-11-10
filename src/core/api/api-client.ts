@@ -9,7 +9,7 @@ import {
 } from './api-error'
 import { AUTH_REFRESH_PATH, renewSession } from './session-renewal'
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   message: string
   timestamp: string
   data?: T
