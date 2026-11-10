@@ -1,5 +1,9 @@
 {
   "PLANS": {
+    "META": {
+      "TITLE": "แผนประกันเดินทางต่างประเทศ เปรียบเทียบราคาและความคุ้มครอง",
+      "DESCRIPTION": "เปรียบเทียบแผนประกันเดินทางตามปลายทางและจำนวนวัน ราคาต่อคนรวมอากรแสตมป์และภาษีมูลค่าเพิ่มแล้ว ซื้อออนไลน์ รับกรมธรรม์ทางอีเมล"
+    },
     "PAGE": {
       "TITLE": "Choose the right travel insurance for your trip",
       "SUBTITLE": "Price per traveller by trip length, stamp duty and VAT included",

@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Tripsurance',
+  title: { default: 'Tripsurance', template: '%s | Tripsurance' },
   description: 'Travel insurance, made simple',
 }
 
