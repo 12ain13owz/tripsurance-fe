@@ -1,2 +1,2 @@
 export { HomeView } from './home/home-view'
-export { LocaleSwitcher } from './components/LocaleSwitcher'
+export { ConsumerShellView } from './shell/consumer-shell-view'

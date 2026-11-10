@@ -1,25 +1,28 @@
-import { notFound } from 'next/navigation'
-import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { setRequestLocale } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale } from 'next-intl/server'
+import { BaseLayout } from '@/core/layout'
+import { ConsumerShellView } from '@/features/consumer'
 import { routing } from '@/shared/i18n'
-import type { ReactNode } from 'react'
+import type { Metadata } from 'next'
+import '@/app/globals.css'
+
+export const metadata: Metadata = {
+  title: 'Tripsurance',
+  description: 'Travel insurance, made simple',
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export default async function ConsumerLayout({
-  children,
-  params,
-}: {
-  children: ReactNode
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-  if (!hasLocale(routing.locales, locale)) {
-    notFound()
-  }
-  setRequestLocale(locale)
+export default async function ConsumerLayout({ children }: LayoutProps<'/[locale]'>) {
+  const locale = await getLocale()
 
-  return <NextIntlClientProvider>{children}</NextIntlClientProvider>
+  return (
+    <BaseLayout lang={locale}>
+      <NextIntlClientProvider>
+        <ConsumerShellView>{children}</ConsumerShellView>
+      </NextIntlClientProvider>
+    </BaseLayout>
+  )
 }

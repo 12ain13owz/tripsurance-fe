@@ -1,10 +1,5 @@
-import { HomeView, LocaleSwitcher } from '@/features/consumer'
+import { HomeView } from '@/features/consumer'
 
 export default function ConsumerHomePage() {
-  return (
-    <>
-      <HomeView></HomeView>
-      <LocaleSwitcher></LocaleSwitcher>
-    </>
-  )
+  return <HomeView />
 }
