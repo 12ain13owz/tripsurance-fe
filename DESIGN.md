@@ -143,7 +143,7 @@ Sizes: `btn-sm` (dense admin rows/tables), default (consumer forms), `btn-lg` (p
 
 #### Plan cards (consumer plan listing)
 
-Reference: `plans-mock.html` (v3) in the workspace root.
+Reference: `mocks/plans-mock.html` (v3) and `mocks/order-flow-mock.html` (CTAs, `/order`) in the workspace root.
 
 `/plans` is an **overview to compare plans, not a shop**: nothing is selected or bought there. Every card leads into the purchase funnel at `/order` (§4 Purchase stepper), which asks for the trip first and only then offers the plans that fit it, at the trip's real price.
 
