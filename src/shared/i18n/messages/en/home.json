@@ -42,16 +42,16 @@
     "STEPS": {
       "TITLE": "How it works",
       "ITEMS": {
-        "CHOOSE": {
-          "TITLE": "Choose a plan",
-          "DESCRIPTION": "Compare plans by destination, cover and price."
-        },
         "DETAILS": {
           "TITLE": "Enter your trip",
-          "DESCRIPTION": "Add your dates, travellers and any optional cover."
+          "DESCRIPTION": "Tell us your destination, travel dates and number of travellers."
+        },
+        "CHOOSE": {
+          "TITLE": "Choose a plan",
+          "DESCRIPTION": "Compare cover and price for your trip, and add optional cover."
         },
         "POLICY": {
-          "TITLE": "Get your policy",
+          "TITLE": "Pay and get your policy",
           "DESCRIPTION": "Pay online and receive your policy by email."
         }
       }

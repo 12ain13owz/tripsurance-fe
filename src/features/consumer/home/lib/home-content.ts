@@ -40,9 +40,10 @@ export const coverageHighlights: HomeItem<PlanCoverageCategory>[] = [
 ]
 
 /** Keys under HOME.STEPS.ITEMS, in order */
+/** Keys under HOME.STEPS.ITEMS, in order */
 export const steps: HomeItem[] = [
-  { key: 'CHOOSE', icon: MousePointerClick },
   { key: 'DETAILS', icon: ClipboardList },
+  { key: 'CHOOSE', icon: MousePointerClick },
   { key: 'POLICY', icon: MailCheck },
 ]
 
